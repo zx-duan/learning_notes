@@ -1,0 +1,74 @@
+## 枚举
+
+枚举的介绍
+
+​	在一个类上将class修改为emum
+
+- 枚举无法通过构造器创建对象 因为构造器是私有的
+
+- 枚举不能继承别的类
+
+  
+
+  ​	
+
+
+
+
+1. 应用的场景:
+
+     当已有的类型不能满足我们的需求是我们可以使用枚举来指定类型
+
+2. 为枚举中添加类型 / 或者指定的方法
+
+   为枚举添加方法时需要注意的是若是枚举已经`指定类型`此时就需要创建出枚举类型的全参构造器通过全参构造器
+
+   
+
+
+
+接口的使用 
+
+1. 实现接口
+
+   ![1568109448701](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109448701.png)
+
+   ```java
+   //获取枚举类型中的成员变量
+   Color.RED.getName(); ---RED
+   ```
+
+   
+
+
+
+1. **使用接口组织枚举**
+
+   ![1568109487568](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109487568.png)
+
+   ![1568109497008](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109497008.png)
+
+
+
+> 应用场景
+>
+> 
+>
+> 未知
+
+
+
+
+
+
+
+
+
+枚举集合的使用
+
+
+
+
+
+![1568108656719](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568108656719.png)
+

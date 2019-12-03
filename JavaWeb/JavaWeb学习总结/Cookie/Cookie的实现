@@ -1,0 +1,42 @@
+# Cookie
+
+
+
+如何实现一个Cookie
+
+Cookie 的创建
+
+```java
+//用来获取当前请求中所有的Cookie
+Cookie[] cookies = request.getCookies();
+//如果想要获得自己想要的那个Cookie
+if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    //设置Cookie的延长时间
+                cookie.setMaxAge(RedisKeys.USER_INFO_LOGIN.getCodeTime().intValue());
+                    //将Cookie重新添加
+                    response.addCookie(cookie);
+                    return cookie.getValue();
+                }
+            }
+        }
+```
+
+**Cookie的延长时间**
+
+```java
+//通过该方法将已有的Cookie添加延长的时间
+.setMaxAge(int time);
+```
+
+
+
+**将Cookie传递到浏览器上面**
+
+```java
+//通过响应添加Cookie , 传递到浏览器上面
+response.addCookie(Cookie cookie);
+
+```
+

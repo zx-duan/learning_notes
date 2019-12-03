@@ -1,0 +1,234 @@
+## MySQL性能优化
+
+在一个性能优化的场景中, 通常情况下 55%是要优化业务代码以及架构, 30% 要优化数据库语句 , 剩下10%用来优化硬件
+
+
+
+
+
+
+
+## MySQL优化的方向
+
+
+
+#### 1.1.1 引擎
+
+其中MySQL中我们最常用的两种引擎就是 ==**Innodb** , **MyIsam**==
+
+两者最大的不同点在于 MyIsam只适合用来查询并且是不支持事务的 , 而Innodb更适合用来做一些带有事务的DML操作 , 以下是两者功能对照图
+
+​								![1572520100317](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572520100317.png)
+
+> **InnoDB**
+>
+> `.frm` : 主要用来存储mysql的命令
+>
+> `.ibd`  : 用于存储数据的文件 <font style="color:red"> (里面包含了表的索引 , 与数据的文件)</font> 索引与数据是存放在一起的
+>
+> 
+>
+> **MyISAM**
+>
+> `.frm` : 主要也是用来存储MySql命令的
+>
+> `.myd` : 用来存储表的数据
+>
+> `.myi` : 用来存储表的索引
+
+
+
+#### **1.1.2  索引**
+
+**索引是查询数据库的主要功能之一** 
+
+在数据之外 , 数据库系统还维护着满足特定查找算法的数据结构 , 这些数据结构以某一种方式引用数据 , 这样可以在这些数据结构上 , 实现高级查找算法 , 这种数据结构就称之为 **"索引"**
+
+[索引类型网站](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
+
+
+
+ **B+Tree**
+
+InnoDB与MyISAM这两种索引结构均为 ==B+Tree== 该索引结构最大的特点就是内部利用二分法进行插入 , 而且检索的话都是通过索引 + 二分法算法进行检索的
+
+图 1
+
+![1572521071812](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521071812.png)
+
+![1572521103023](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521103023.png)
+
+> mysql中索引的介绍
+>
+> ​		使用平衡树实现索引，是mysql中使用最多的索引类型；在innodb中，存在两种索引类型，第一种是==主键索引（primary key）==，在索引内容中直接保存数据的地址；第二种是==其他索引==，在索引内容中保存的是指向主键索引的引用(内容)；所以在使用innodb的时候，==要尽量的使用主键索引，速度非常快==；
+
+
+
+**Hash**
+
+把索引的值做hash运算，并存放到hash表中，使用较少，一般是memory引擎使用；因为使用hash表存储，按照常理，hash的性能比B-TREE效率高很多。
+
+**hash索引的缺点：**
+	1，hash索引只能适用于精确的值比较，=，in，或者<>, 因为只需要经过一次算法即可找到相应的键值；
+	2，无法使用索引排序,因为原先是有序的键值，经过哈希算法后，有可能变成不连续的了，就没办法再利用索引完成范围查询检索；
+	3，组合hash索引无法使用部分索引,以及like ‘xxx%’ 这样的部分模糊查询（这种部分模糊查询，其实本质上也是范围查询）；
+	4，如果大量索引hash值相同，性能较低 , 因为会产生很长的链表；
+
+
+
+图 2
+
+​		![1572521398698](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521398698.png)
+
+
+
+**<font style="color:red">注意事项 : Innodb, Myisam引擎支持hash么 ?</font>**
+
+​		MySQL 最经常使用存储引擎 InnoDB 和 MyISAM 都不支持 Hash 索引，它们默认的索引都是 B-Tree。可是假设你在创建索引的时候定义其类型为 Hash，MySQL 并不会报错，并且你通过 SHOW CREATE TABLE 查看该索引也是 Hash，仅仅只是该索引实际上还是 B-Tree。
+​		虽然常见存储引擎并不支持 Hash 索引，但 InnoDB 有另一种实现方法：自适应哈希索引。InnoDB 存储引擎会监控对表上索引的查找，如果观察到建立哈希索引可以带来速度的提升，则建立哈希索引。
+
+​		换句话说这两个引擎使用Hash是内部调用的 , 我们并不能操控
+
+
+
+
+
+#### 1.1.3 MyISAM / Innodb的索引实现即查询原理
+
+**MyISAM**
+
+MyISAM引擎使用B+Tree作为索引结构，==叶节点的data域存放的是数据记录的地址==。
+
+![1572521757589](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521757589.png)
+
+**注 : 叶节点是上面红色线的部分**
+
+原理 : 
+
+在MyIsam中 , 主节点是唯一切有序的 , **通过平衡树算法判断索引的位置 , 然后根据data中记录的数据地址 , 去另一个数据空间根据地址进行查找** , 严格意义上来讲 , MyIsam的查询执行了两次
+
+​											![1572522024625](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522024625.png)
+
+**总结**  :
+
+> ​		在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。如果我们在Col2上建立一个辅助索引，则此索引的结构如图所示
+>
+>
+> ​		同样也是一颗B+Tree，data域保存数据记录的地址。因此，MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。
+>
+> MyISAM的索引方式也叫做“非聚集”的，之所以这么称呼是为了与InnoDB的聚集索引区分。
+
+
+
+
+
+**InnoDB**
+
+虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。
+
+第一个重大区别是InnoDB的数据文件本身就是索引文件。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。
+
+[图 4](为InnoDB的主索引) 
+
+![1572522417135](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522417135.png)
+
+原理:
+
+在InnoDB中叶子主键索引的位置就代表了这个数据 , 所以我们获取到这个主键索引的值就可以获取到对应的数据只需要查询一次
+
+<font style="color:red">这种索引也被称为 **聚簇索引**</font>
+
+![1572522782473](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522782473.png)
+
+辅助索引
+
+![1572522850949](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522850949.png)
+
+> 总结 : 
+>
+> ​		与MyISAM索引的不同是InnoDB的辅助索引data域存储相应记录主键的值而不是地址。换句话说，InnoDB的所有辅助索引都引用主键作为data域。
+>
+> ​		聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。
+
+
+
+#### 1.1.4 使用索引的好处与坏处
+
+**首先要明确什么样的数据我们需要并且可以使用索引**
+
+1. 对于一些查询极其频繁, 并且选择性很高的数据我们可以使用索引帮我们优化mysql的查询  (选择性=索引值的选择范围 * 数量)
+
+   索引值的选择范围 : 值的可变选择数量
+
+
+
+2. 对于一些唯一性特别差而且选择性很低的数据就不适合用索引
+3. 更新非常频繁的字段也不适合做索引 , 因为如果将这类字段作为索引, 当字段修改的时候 , 引擎的内部是需要回旋索引的 <u>这也就意味着很大一部分索引的位置是会发生改变的</u>
+4. 不会出现WHERE条件后的字段也不建议设置索引 , 都不用它查为什么要设置索引
+
+
+
+#### 单值索引与组合索引
+
+​		单值索引顾名思义就是单个值作为索引 , 而组合索引就是多个字段作为索引 , **==如果使用myisam引擎的话强烈建议使用组合索引==**
+
+
+
+
+
+http://note.youdao.com/noteshare?id=81cc08ee175cb73aabfdf986c2c0541d&sub=595624649CC84DFBB3E905E449916BFA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Explain命令
+
+select_type 查询的类型
+
+type 这个类型代表了查询的速度
+
+![1572525310539](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572525310539.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+**query 查询优化**
+
+
+
+orderbay 排序优化
+
+
+
+
+
+JOIN 关联优化
+
+
+
+
+

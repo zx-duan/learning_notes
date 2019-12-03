@@ -1,0 +1,185 @@
+# Springmvc的使用
+
+## SpringMvc的应用场景
+
+
+### SpringMvc控制器的思想
+
+![avatar](img/MVC控制器流程.png ) 
+
+2. 常见的MVC框架
+  
+
+Struts1 ---> WebWork ---> Struts2
+SpringMVC
+JSF
+
+3. 前端控制器的作用
+    1. 没有前端控制器之前用户的一个请求就需要创建一个Servlet如果每次请求需要做相同的处理操作此时每个Servlet都需要重复的处理
+    2. `有了控制器之后`
+    ![avatar](img/mvc_02.png )
+
+#### 使用SpringMVC配置的注意事项
+
+1. 加载jar包
+``` html
+    1. 
+         <groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${spring.version}</version>
+    2.   <groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+		<version>3.0.1</version>
+		<scope>provided</scope>
+```
+2. 配置前端控制器
+    1. ![aratar](img\前端控制器.png)
+    2. 
+        MVC注解
+        <mvc:annotation-drivern/>
+3. 编写一个处理器类
+  
+4. 配置SpringMVC配置文件
+    ![aratar](img/SpringMVC配置文件.png )
+
+### `MVC框架,能解决WEB开发中的常见性问题(参数设置,文件上传,表单验证,国际化等)`
+
+#### 请求方式的修改
+* 旧的
+
+    request.forword()
+* 新的
+    ```java
+        //通知Spring告诉此类是一个控制器
+        @Controller
+        /**控制器请求访问的地址   
+        可以贴在类或者方法上
+        如果贴在方法上就代表请求的参数需要加上那个地址
+        */
+        @RequestMapping("/home")
+    ```
+#### 参数设置
+
+1. ##### 参数设置
+    
+    1. 从jsp访问到servlet的过程中会有请求参数产生:如果请求参数很多需要些很多`setAttrbiute();` / `getAttrbiute();`
+    * 旧的方式
+    getParmert()
+    
+    * `新的方式`
+        SpringMvc只需要在方法的参数中设置即可
+        ```java
+	        // 使用Attribute注解,相当于get/setAttribute
+	    public String getParment(@ModelAttribute("u") User u) {
+		    System.out.println(u);
+		    return "/WEB-INF/hellocontrol.jsp";
+        }
+        // 使用JavaBean类型参数
+        ```
+
+
+	    @RequestMapping("/hello")
+	    // 使用Attribute注解,相当于get/setAttribute
+	    public ModelAndView getParment(@ModelAttribute("u") User u) {
+	    	System.out.println(u);
+	    	return null;
+	    }
+	    ```
+	    >`如果要穿入List,需要将List封装到对象中`
+2. ##### 文件上传
+    
+    1. 以往的文件上传需要 获取表单内的内容`使用SpringMVC优化了这些内容可以用这么麻烦的获取`
+    * 旧的
+        1. 填写表单
+        2. 获取表单传递的内容
+        3. 根据内容判断是否是文件提交
+        4. 然后获取文件的属性.....
+    * 新的
+        1. 添加文件配置解析器
+        ```xml
+            <!-- 配置文件上传解析器 -->
+	        <bean id="multipartResolver"        class="org.springframework.web.multipart.commons.   CommonsMultipartResolver">
+		    <!-- 配置文件上传的大小 -->
+		    <property name="maxUploadSize" value="78976897686786"></property>
+        </bean>
+        ```
+        2. 定义方法
+        ```java
+	    @RequestMapping("/upload")
+        public ModelAndView upload(@RequestParam("username") String name, Integer age, MultipartFile file){}
+        ```
+        `根据获取到打额文件进行文件上传的操作`
+3. ##### 表单验证
+  
+    1. 以往的表单验证需要获取到从表单传递过来的数据并且还需要封装,如果数据很多代码的冗余也很多`使用SpringMVC可以让底层代码自动获取`
+4. ##### 时间配置
+    
+1. `因为在SpringMVC中属性都是以参数的形式传递,当遇到了需要传递时间的参数时怎么办?`
+    
+        使用注解:
+        ```java
+	        public String hello(@DateTimeFormat(pattern = "yyyy-MM-dd") Date u) {
+		        System.out.println(u.toLocaleString());
+		        return "/WEB-INF/hellocontrol.jsp";
+            }
+        ```
+    2. `更多的时候，Date 参数都是作为对象的字段存在，此时需要在该字段上贴`
+        解决办法:
+        ```java
+            public class user(){
+                @DateTimeFormat(pattern="yyyy-MM-dd")
+                private Date d;
+            }
+        ```
+    3. `在控制器中注册自定义属性编辑器`
+    ![img](img\date.png)
+    
+    4. 国际化
+        ```xml
+	    <dependency>
+            <groupId>org.apache.taglibs</groupId>
+    	    <artifactId>taglibs-standard-spec</artifactId>
+    	    <version>1.2.5</version>
+        </dependency>
+	    <dependency>
+	        <groupId>org.apache.taglibs</groupId>
+	        <artifactId>taglibs-standard-impl</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+        ```
+        ![img](img\fmt标签.png)
+
+
+
+## 			5.拦截器与过滤器的区别
+
+![img](https://img-blog.csdn.net/20180603133007923?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p4ZDE0MzU1MTM3NzU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+
+
+1、拦截器是基于java的反射机制的，而过滤器是基于函数回调
+2、过滤器依赖与servlet容器，而拦截器不依赖与servlet容器
+3、拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用
+4、拦截器可以访问action上下文、值栈里的对象，而过滤器不能
+5、在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次
+拦截器 ：是在面向切面编程的就是在你的service或者一个方法，前调用一个方法，或者在方法后调用一个方法比如动态代理就是拦截器的简单实现，在你调用方法前打印出字符串（或者做其它业务逻辑的操作），也可以在你调用方法后打印出字符串，甚至在你抛出异常的时候做业务逻辑的操作。 
+
+![img](file:///C:\Users\Zhangxinuser\AppData\Roaming\feiq\RichOle\2533092428.bmp)
+
+
+
+SpringMvc的执行流程
+
+![1568271427497](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568271427497.png)
+
+> 2.1、用户发送出请求到前端控制器 DispatcherServlet。
+> 2.2、DispatcherServlet 收到请求调用 HandlerMapping（处理器映射器）。
+> 2.3、HandlerMapping 找到具体的处理器（通过 XML 或注解配置），生成处理器对象及处理器拦截器（若有），再一起返回给 DispatcherServlet。
+> 2.4、DispatcherServlet 调用 HandlerAdapter（处理器适配器）。
+> 2.5、HandlerAdapter 经过适配调用具体的处理器的某个方法（Handler/Controller）。
+> 2.6、Controller 执行完成返回 ModelAndView 对象。
+> 2.7、HandlerAdapter 将 Controller 返回的 ModelAndView 再返回给 DispatcherServlet。
+> 2.8、DispatcherServlet 将 ModelAndView 传给 ViewReslover（视图解析器）。
+> 2.9、ViewReslover 解析后返回具体 View（视图）。
+> 2.10、DispatcherServlet 根据 View 进行渲染视图（即将模型数据填充至视图中）。
+> 2.11、DispatcherServlet 响应用户。

@@ -1,0 +1,4 @@
+## commons-beanutils
+
+> `commons-beanutils`是Apache开源组织提供的用于操作JAVA BEAN的工具包。使用`commons-beanutils`，我们可以很方便的对bean对象的属性进行操作。也就是操作`bean`对象用的
+

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://www.cnblogs.com/w-y-c-m/p/8443892.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta property="og:description" content="摘要 本文从源码层面简单讲解SpringMVC的参数绑定原理 SpringMVC参数绑定相关组件的初始化过程 在理解初始化之前，先来认识一个接口 HandlerMethodArgumentResolv">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园</title>
+    
+    <link rel="stylesheet" href="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/bundle-codinglife.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/bundle-codinglife-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/w-y-c-m/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/w-y-c-m/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/w-y-c-m/wlwmanifest.xml">
+    <script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/amp4ads-host-v0.js.下载"></script><script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/pubads_impl_rendering_2019082901.js.下载"></script><script async="" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/analytics.js.下载"></script><script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+    <script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/blog-common.min.js.下载"></script>
+    <script>
+        var currentBlogId = 343601;
+        var currentBlogApp = 'w-y-c-m';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+    </script>
+    
+    
+    
+<link rel="preload" href="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/f.txt"></script><script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/pubads_impl_2019082901.js.下载" async=""></script><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-35/html/container.html"></head>
+<body>
+    <a name="top"></a>
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/w-y-c-m/"><img id="blogLogo" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/w-y-c-m/">卧颜沉默</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/w-y-c-m/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%8D%A7%E9%A2%9C%E6%B2%89%E9%BB%98">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/w-y-c-m/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+12&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+42</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/w-y-c-m/p/8443892.html">SpringMVC源码之参数解析绑定原理</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <h2 id="摘要">摘要</h2>
+<ul>
+<li>本文从源码层面简单讲解SpringMVC的参数绑定原理</li>
+</ul>
+<h2 id="springmvc参数绑定相关组件的初始化过程">SpringMVC参数绑定相关组件的初始化过程</h2>
+<ul>
+<li>在理解初始化之前，先来认识一个接口</li>
+</ul>
+<h4 id="handlermethodargumentresolver">HandlerMethodArgumentResolver</h4>
+<ul>
+<li>方法参数解析器接口，这个接口是SpringMVC参数解析绑定的核心接口。不同的参数类型绑定都是通过实现这个接口来实现。也可以通过实现这个接口来自定义参数解析器。这个接口中有如下两个方法<br></li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">HandlerMethodArgumentResolver</span> </span>{
+
+    <span class="hljs-comment">//该解析器是否支持parameter参数的解析</span>
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">supportsParameter</span><span class="hljs-params">(MethodParameter parameter)</span></span>;
+
+    <span class="hljs-comment">//将方法参数从给定请求(webRequest)解析为参数值并返回</span>
+    <span class="hljs-function">Object <span class="hljs-title">resolveArgument</span><span class="hljs-params">(MethodParameter parameter,
+                          ModelAndViewContainer mavContainer,
+                          NativeWebRequest webRequest,
+                          WebDataBinderFactory binderFactory)</span> <span class="hljs-keyword">throws</span> Exception</span>;
+
+}</code></pre>
+<h4 id="初始化">初始化</h4>
+<ul>
+<li>RequestMappingHandlerAdapter.java类的afterPropertiesSet（line:481）方法初始化相关方法参数解析器。代码如下<br></li>
+</ul>
+<pre><code class="hljs dart">public <span class="hljs-keyword">void</span> afterPropertiesSet() {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.argumentResolvers == <span class="hljs-keyword">null</span>) {
+        <span class="hljs-comment">//初始化SpringMVC默认的方法参数解析器，并添加至argumentResolvers（HandlerMethodArgumentResolverComposite）</span>
+        <span class="hljs-built_in">List</span>&lt;HandlerMethodArgumentResolver&gt; resolvers = getDefaultArgumentResolvers();
+        <span class="hljs-keyword">this</span>.argumentResolvers = <span class="hljs-keyword">new</span> HandlerMethodArgumentResolverComposite().addResolvers(resolvers);
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.initBinderArgumentResolvers == <span class="hljs-keyword">null</span>) {
+        <span class="hljs-comment">//初始化SpringMVC默认的初始化绑定器(@InitBinder)参数解析器，并添加至initBinderArgumentResolvers（HandlerMethodArgumentResolverComposite）</span>
+        <span class="hljs-built_in">List</span>&lt;HandlerMethodArgumentResolver&gt; resolvers = getDefaultInitBinderArgumentResolvers();
+        <span class="hljs-keyword">this</span>.initBinderArgumentResolvers = <span class="hljs-keyword">new</span> HandlerMethodArgumentResolverComposite().addResolvers(resolvers);
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.returnValueHandlers == <span class="hljs-keyword">null</span>) {
+        <span class="hljs-comment">//获取默认的方法返回值解析器</span>
+        <span class="hljs-built_in">List</span>&lt;HandlerMethodReturnValueHandler&gt; handlers = getDefaultReturnValueHandlers();
+        <span class="hljs-keyword">this</span>.returnValueHandlers = <span class="hljs-keyword">new</span> HandlerMethodReturnValueHandlerComposite().addHandlers(handlers);
+    }
+    initControllerAdviceCache();
+}</code></pre>
+<ul>
+<li>现在我们进入getDefalutArgumentResolvers方法，代码如下<br></li>
+</ul>
+<pre><code class="hljs cs"><span class="hljs-comment">//默认的参数解析，创建了默认的24个参数解析器，并添加至resolvers</span>
+<span class="hljs-comment">//这里的24个参数解析器都是针对不同的参数类型来解析的</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;HandlerMethodArgumentResolver&gt; <span class="hljs-title">getDefaultArgumentResolvers</span>(<span class="hljs-params"></span>) </span>{
+    List&lt;HandlerMethodArgumentResolver&gt; resolvers = <span class="hljs-keyword">new</span> ArrayList&lt;HandlerMethodArgumentResolver&gt;();
+
+    <span class="hljs-comment">// 基于注解的参数解析器</span>
+
+    <span class="hljs-comment">//一般用于带有@RequestParam注解的简单参数绑定，简单参数比如byte、int、long、double、String以及对应的包装类型</span>
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestParamMethodArgumentResolver(getBeanFactory(), <span class="hljs-literal">false</span>));
+    <span class="hljs-comment">//用于处理带有@RequestParam注解，且参数类型为Map的解析绑定</span>
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestParamMapMethodArgumentResolver());
+    <span class="hljs-comment">//一般用于处理带有@PathVariable注解的默认参数绑定</span>
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> PathVariableMethodArgumentResolver());
+    <span class="hljs-comment">//也是用于带有@PathVariable注解的Map相关参数绑定，后续还有一些默认的参数解析器。后续还有一些参数解析器，我这里都不一一解释了。想具体确认某个参数会交个哪个参数解析器处理，可以通过以下解析器的supportsParameter(MethodParameter parameter)方法得知</span>
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> PathVariableMapMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> MatrixVariableMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> MatrixVariableMapMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletModelAttributeMethodProcessor(<span class="hljs-literal">false</span>));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestResponseBodyMethodProcessor(getMessageConverters()));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestPartMethodArgumentResolver(getMessageConverters()));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestHeaderMethodArgumentResolver(getBeanFactory()));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RequestHeaderMapMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletCookieValueMethodArgumentResolver(getBeanFactory()));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ExpressionValueMethodArgumentResolver(getBeanFactory()));
+
+    <span class="hljs-comment">// 基于类型的参数解析器</span>
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletRequestMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletResponseMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> HttpEntityMethodProcessor(getMessageConverters()));
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> RedirectAttributesMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ModelMethodProcessor());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> MapMethodProcessor());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ErrorsMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> SessionStatusMethodArgumentResolver());
+    resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> UriComponentsBuilderMethodArgumentResolver());
+
+    <span class="hljs-comment">// Custom arguments</span>
+    <span class="hljs-keyword">if</span> (getCustomArgumentResolvers() != <span class="hljs-literal">null</span>) {
+        resolvers.addAll(getCustomArgumentResolvers());
+    }</code></pre>
+<ul>
+<li>参数解析器添加至HandlerMethodArgumentResolverComposite这个类，这个也是实现了HandlerMethodArgumentResolver接口。这里运用涉及模式中的composite模式（组合模式），SpringMVC中，所有请求的参数解析都是进入HandlerMethodArgumentResolverComposite类来完成的。它有两个成员变量，如下<br></li>
+</ul>
+<pre><code class="hljs php"><span class="hljs-comment">//它的元素在RequestMappingHandlerAdapter类的afterPropertiesSet方法中被添加，存放的是SpringMVC一些默认的HandlerMethodArgumentResolver参数解析器</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">List</span>&lt;HandlerMethodArgumentResolver&gt; argumentResolvers =
+            <span class="hljs-keyword">new</span> LinkedList&lt;HandlerMethodArgumentResolver&gt;();
+<span class="hljs-comment">//存放已经解析过的参数，已经对应的HandlerMethodArgumentResolver解析器。加快查找过程</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;MethodParameter, HandlerMethodArgumentResolver&gt; argumentResolverCache =
+        <span class="hljs-keyword">new</span> ConcurrentHashMap&lt;MethodParameter, HandlerMethodArgumentResolver&gt;(<span class="hljs-number">256</span>);</code></pre>
+<ul>
+<li>介绍了这么多，话不多说。直接来看一个详细解析绑定过程吧</li>
+</ul>
+<h2 id="绑定过程">绑定过程</h2>
+<ul>
+<li>先看一个简单参数绑定，有如下Controller和请求,代码如下。<br></li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-meta">@Controller</span>
+<span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/ParameterBind"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParameterBindTestController</span> </span>{
+    <span class="hljs-meta">@ResponseBody</span>
+    <span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/test1"</span>)
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">test1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> id)</span></span>{
+        System.out.println(id);
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"test1"</span>;
+    }
+}</code></pre>
+<p><img src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/1.png"></p>
+<ul>
+<li>请求进入DispatcherServlet的doDispatch后，获取HandlerMethod。然后根据HandlerMethod来确认HandlerApapter，确认后执行HandlerAdapter的handle方法。这里确认HandlerApater为RequestMappingHandlerAdapter，在执行handlerMethod之前，需要处理参数的绑定。然后看看详细的参数绑定过程</li>
+<li>执行HandlerAdapter的handler方法后，进入RequestMappingHandlerAdapter的invokeHandleMethod方法（line:711）<br></li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> ModelAndView <span class="hljs-title">invokeHandleMethod</span><span class="hljs-params">(HttpServletRequest request,
+            HttpServletResponse response, HandlerMethod handlerMethod)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+
+    ServletWebRequest webRequest = <span class="hljs-keyword">new</span> ServletWebRequest(request, response);
+
+    WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
+    ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
+    <span class="hljs-comment">//根据handlerMethod和binderFactory创建一个ServletInvocableHandlerMethod。后续把请求直接交给ServletInvocableHandlerMethod执行。</span>
+    <span class="hljs-comment">//createRequestMappingMethod方法比较简单，把之前RequestMappingHandlerAdapter初始化的argumentResolvers和returnValueHandlers添加至ServletInvocableHandlerMethod中</span>
+    ServletInvocableHandlerMethod requestMappingMethod = createRequestMappingMethod(handlerMethod, binderFactory);
+
+    ModelAndViewContainer mavContainer = <span class="hljs-keyword">new</span> ModelAndViewContainer();
+    mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
+    modelFactory.initModel(webRequest, mavContainer, requestMappingMethod);
+    mavContainer.setIgnoreDefaultModelOnRedirect(<span class="hljs-keyword">this</span>.ignoreDefaultModelOnRedirect);
+
+    AsyncWebRequest asyncWebRequest = WebAsyncUtils.createAsyncWebRequest(request, response);
+    asyncWebRequest.setTimeout(<span class="hljs-keyword">this</span>.asyncRequestTimeout);
+
+    <span class="hljs-keyword">final</span> WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
+    asyncManager.setTaskExecutor(<span class="hljs-keyword">this</span>.taskExecutor);
+    asyncManager.setAsyncWebRequest(asyncWebRequest);
+    asyncManager.registerCallableInterceptors(<span class="hljs-keyword">this</span>.callableInterceptors);
+    asyncManager.registerDeferredResultInterceptors(<span class="hljs-keyword">this</span>.deferredResultInterceptors);
+
+    <span class="hljs-keyword">if</span> (asyncManager.hasConcurrentResult()) {
+        Object result = asyncManager.getConcurrentResult();
+        mavContainer = (ModelAndViewContainer) asyncManager.getConcurrentResultContext()[<span class="hljs-number">0</span>];
+        asyncManager.clearConcurrentResult();
+
+        <span class="hljs-keyword">if</span> (logger.isDebugEnabled()) {
+            logger.debug(<span class="hljs-string">"Found concurrent result value ["</span> + result + <span class="hljs-string">"]"</span>);
+        }
+        requestMappingMethod = requestMappingMethod.wrapConcurrentResult(result);
+    }
+
+    requestMappingMethod.invokeAndHandle(webRequest, mavContainer);
+
+    <span class="hljs-keyword">if</span> (asyncManager.isConcurrentHandlingStarted()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+
+    <span class="hljs-keyword">return</span> getModelAndView(mavContainer, modelFactory, webRequest);
+}</code></pre>
+<ul>
+<li>然后进入invokeAndHanldle方法，然后进入invokeForRequest方法，这个方法的职责是从request中解析出HandlerMethod方法所需要的参数，然后通过反射调用HandlerMethod中的method。代码如下<br></li>
+</ul>
+<pre><code class="hljs dart">public <span class="hljs-keyword">final</span> <span class="hljs-built_in">Object</span> invokeForRequest(NativeWebRequest request,
+                                        ModelAndViewContainer mavContainer,
+                                        <span class="hljs-built_in">Object</span>... providedArgs) throws Exception {
+        <span class="hljs-comment">//从request中解析出HandlerMethod方法所需要的参数，并返回Object[]</span>
+        <span class="hljs-built_in">Object</span>[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
+
+        <span class="hljs-keyword">if</span> (logger.isTraceEnabled()) {
+            StringBuilder builder = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"Invoking ["</span>);
+            builder.append(<span class="hljs-keyword">this</span>.getMethod().getName()).append(<span class="hljs-string">"] method with arguments "</span>);
+            builder.append(Arrays.asList(args));
+            logger.trace(builder.toString());
+        }
+        <span class="hljs-comment">//通过反射执行HandleMethod中的method，方法参数为args。并返回方法执行的返回值</span>
+        <span class="hljs-built_in">Object</span> returnValue = invoke(args);
+
+        <span class="hljs-keyword">if</span> (logger.isTraceEnabled()) {
+            logger.trace(<span class="hljs-string">"Method ["</span> + <span class="hljs-keyword">this</span>.getMethod().getName() + <span class="hljs-string">"] returned ["</span> + returnValue + <span class="hljs-string">"]"</span>);
+        }
+
+        <span class="hljs-keyword">return</span> returnValue;
+    }</code></pre>
+<ul>
+<li>直接进入getMethodArgumentValues方法看看其过程，代码如下<br></li>
+</ul>
+<pre><code class="hljs dart"><span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">* </span>获取当前请求的方法参数值。
+*/</span></span>
+private <span class="hljs-built_in">Object</span>[] getMethodArgumentValues(
+        NativeWebRequest request, ModelAndViewContainer mavContainer,
+        <span class="hljs-built_in">Object</span>... providedArgs) throws Exception {
+    <span class="hljs-comment">//获取方法参数数组</span>
+    MethodParameter[] parameters = getMethodParameters();
+    <span class="hljs-comment">//创建一个参数数组，保存从request解析出的方法参数</span>
+    <span class="hljs-built_in">Object</span>[] args = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Object</span>[parameters.length];
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; parameters.length; i++) {
+        MethodParameter parameter = parameters[i];
+        parameter.initParameterNameDiscovery(parameterNameDiscoverer);
+        GenericTypeResolver.resolveParameterType(parameter, getBean().getClass());
+
+        args[i] = resolveProvidedArgument(parameter, providedArgs);
+        <span class="hljs-keyword">if</span> (args[i] != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">//判断之前RequestMappingHandlerAdapter初始化的那24个HandlerMethodArgumentResolver（参数解析器），是否存在支持该参数解析的解析器</span>
+        <span class="hljs-keyword">if</span> (argumentResolvers.supportsParameter(parameter)) {
+            <span class="hljs-keyword">try</span> {
+                args[i] = argumentResolvers.resolveArgument(parameter, mavContainer, request, dataBinderFactory);
+                <span class="hljs-keyword">continue</span>;
+            } <span class="hljs-keyword">catch</span> (Exception ex) {
+                <span class="hljs-keyword">if</span> (logger.isTraceEnabled()) {
+                    logger.trace(getArgumentResolutionErrorMessage(<span class="hljs-string">"Error resolving argument"</span>, i), ex);
+                }
+                <span class="hljs-keyword">throw</span> ex;
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (args[i] == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-built_in">String</span> msg = getArgumentResolutionErrorMessage(<span class="hljs-string">"No suitable resolver for argument"</span>, i);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(msg);
+        }
+    }
+    <span class="hljs-keyword">return</span> args;
+}</code></pre>
+<ul>
+<li>进入HandlerMethodArgumentResolverComposite的resolveArgument方法<br></li>
+</ul>
+<pre><code class="hljs verilog">public Object resolveArgument(
+            MethodParameter <span class="hljs-keyword">parameter</span>, ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
+            throws Exception {
+        <span class="hljs-comment">//首先获取参数解析器，这里获取的逻辑是首先从argumentResolverCache缓存中获取该MethodParameter匹配的HandlerMethodArgumentResolver。如果为空，遍历初始化定义的那24个。查找匹配的HandlerMethodArgumentResolver，然后添加至argumentResolverCache缓存中</span>
+        HandlerMethodArgumentResolver resolver = getArgumentResolver(<span class="hljs-keyword">parameter</span>);
+        Assert<span class="hljs-variable">.notNull</span>(resolver, <span class="hljs-string">"Unknown parameter type ["</span> + <span class="hljs-keyword">parameter</span><span class="hljs-variable">.getParameterType</span>()<span class="hljs-variable">.getName</span>() + <span class="hljs-string">"]"</span>);
+        <span class="hljs-comment">//解析参数</span>
+        <span class="hljs-keyword">return</span> resolver<span class="hljs-variable">.resolveArgument</span>(<span class="hljs-keyword">parameter</span>, mavContainer, webRequest, binderFactory);
+    }</code></pre>
+<ul>
+<li>然后进入HandlerMethodArgumentResolver的resolverArgument方法<br></li>
+</ul>
+<pre><code class="hljs verilog">public <span class="hljs-keyword">final</span> Object resolveArgument(
+            MethodParameter <span class="hljs-keyword">parameter</span>, ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
+            throws Exception {
+        <span class="hljs-comment">//获取int的Class对象</span>
+        Class&lt;?&gt; paramType = <span class="hljs-keyword">parameter</span><span class="hljs-variable">.getParameterType</span>();
+        <span class="hljs-comment">//根据参数定义创建一个NamedValueInfo对象</span>
+        NamedValueInfo namedValueInfo = getNamedValueInfo(<span class="hljs-keyword">parameter</span>);
+        <span class="hljs-comment">//根据参数名解析出对象的值</span>
+        Object arg = resolveName(namedValueInfo<span class="hljs-variable">.name</span>, <span class="hljs-keyword">parameter</span>, webRequest);
+        <span class="hljs-keyword">if</span> (arg == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">if</span> (namedValueInfo<span class="hljs-variable">.defaultValue</span> != <span class="hljs-literal">null</span>) {
+                arg = resolveDefaultValue(namedValueInfo<span class="hljs-variable">.defaultValue</span>);
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (namedValueInfo<span class="hljs-variable">.required</span>) {
+                handleMissingValue(namedValueInfo<span class="hljs-variable">.name</span>, <span class="hljs-keyword">parameter</span>);
+            }
+            arg = handleNullValue(namedValueInfo<span class="hljs-variable">.name</span>, arg, paramType);
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-string">""</span><span class="hljs-variable">.equals</span>(arg) &amp;&amp; (namedValueInfo<span class="hljs-variable">.defaultValue</span> != <span class="hljs-literal">null</span>)) {
+            arg = resolveDefaultValue(namedValueInfo<span class="hljs-variable">.defaultValue</span>);
+        }
+        <span class="hljs-comment">//上面步骤获取的args是String类型，然后转换为方法参数所需要的类型(int)</span>
+        <span class="hljs-keyword">if</span> (binderFactory != <span class="hljs-literal">null</span>) {
+            WebDataBinder binder = binderFactory<span class="hljs-variable">.createBinder</span>(webRequest, <span class="hljs-literal">null</span>, namedValueInfo<span class="hljs-variable">.name</span>);
+            arg = binder<span class="hljs-variable">.convertIfNecessary</span>(arg, paramType, <span class="hljs-keyword">parameter</span>);
+        }
+
+        handleResolvedValue(arg, namedValueInfo<span class="hljs-variable">.name</span>, <span class="hljs-keyword">parameter</span>, mavContainer, webRequest);
+
+        <span class="hljs-keyword">return</span> arg;
+    }</code></pre>
+<ul>
+<li>这个方法的职责是，首先获取paramType。也就是int对应的Class对象。然后根据parameter对象创建一个NamedValueInfo对象。这个对象存放的就是参数名、是否必须、参数默认值3个成员变量。然后进入resolverName方法解析参数，里面的逻辑其实很简单，就是根据方法的参数名来获取request中的参数。关键代码如下<br></li>
+</ul>
+<pre><code class="hljs javascript"><span class="hljs-built_in">String</span>[] paramValues = webRequest.getParameterValues(name);
+<span class="hljs-keyword">if</span> (paramValues != <span class="hljs-literal">null</span>) {
+    arg = paramValues.length == <span class="hljs-number">1</span> ? paramValues[<span class="hljs-number">0</span>] : paramValues;
+}</code></pre>
+<p>所以这里返回的值就是9999,这里返回的值还是String类型的。而需要的参数是int类型的。然后通过binder.coverIfNecessary方法把String转换为int类型返回。</p>
+<h3 id="对象绑定">对象绑定</h3>
+<ul>
+<li>新加一个方法，代码如下</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-meta">@ResponseBody</span>
+<span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/test2"</span>)
+<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">test2</span><span class="hljs-params">(User u)</span></span>{
+    System.out.println(u.toString());
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"test1"</span>;
+}</code></pre>
+<p><img src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/1.jpg"></p>
+<ul>
+<li>这个请求的参数解析绑定便会交给ServletModelAttributeMethodProcessor这个类，在初始化argumentResolvers的时候。是会创建两个不同的ServletModelAttributeMethodProcessor对象的。<br></li>
+</ul>
+<pre><code class="hljs cs">resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletModelAttributeMethodProcessor(<span class="hljs-literal">false</span>));
+resolvers.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">new</span> ServletModelAttributeMethodProcessor(<span class="hljs-literal">true</span>));</code></pre>
+<ul>
+<li>这两个有什么区别？进入supportsParameter方法看看<br></li>
+</ul>
+<pre><code class="hljs groovy"><span class="hljs-comment">/**
+*带有<span class="hljs-doctag">@ModelAttribute</span>注解返回true
+* parameter不是简单类型也返回true.
+*/</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> supportsParameter(MethodParameter parameter) {
+        <span class="hljs-keyword">if</span> (parameter.hasParameterAnnotation(ModelAttribute.<span class="hljs-keyword">class</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.annotationNotRequired) {
+            <span class="hljs-keyword">return</span> !BeanUtils.isSimpleProperty(parameter.getParameterType());
+        }
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }</code></pre>
+<ul>
+<li>虽然test2(User u)方法没有ModelAttribute注解，但是User.class不是简单类型。所以该MethodHandler的参数u还是会交给ServletModelAtttributeMethodProcessor处理。</li>
+<li>看看ServletModelAttributeMethodProcessor的resolveArgument方法。它的resolveArgument是由父类ModelAttributeMethodProcessor具体实现的，代码如下。<br></li>
+</ul>
+<pre><code class="hljs dart"><span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">* </span>解析model中的参数，如果从ModelAndViewContainer未找到，直接通过反射实例化一个对象。具体实例化是通过父类的createAttribute方法，通过调用BeanUtils.instantiateClass方法来实例化的。这个对象便是后续传给test2(User u)方法的对象，但是此时创建的对象里面的值都还为空，注入值是通过bindRequestParameters方法来实现的。
+*/</span></span>
+public <span class="hljs-keyword">final</span> <span class="hljs-built_in">Object</span> resolveArgument(
+            MethodParameter parameter, ModelAndViewContainer mavContainer,
+            NativeWebRequest request, WebDataBinderFactory binderFactory)
+            throws Exception {
+
+        <span class="hljs-built_in">String</span> name = ModelFactory.getNameForParameter(parameter);
+        <span class="hljs-built_in">Object</span> attribute = (mavContainer.containsAttribute(name)) ?
+                mavContainer.getModel().<span class="hljs-keyword">get</span>(name) : createAttribute(name, parameter, binderFactory, request);
+
+        WebDataBinder binder = binderFactory.createBinder(request, attribute, name);
+        <span class="hljs-keyword">if</span> (binder.getTarget() != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-comment">//将请求绑定至目标binder的target对象，也就是刚刚创建的attribute对象。</span>
+            bindRequestParameters(binder, request);
+            <span class="hljs-comment">//如果有验证，则验证参数</span>
+            validateIfApplicable(binder, parameter);
+            <span class="hljs-keyword">if</span> (binder.getBindingResult().hasErrors()) {
+                <span class="hljs-keyword">if</span> (isBindExceptionRequired(binder, parameter)) {
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> BindException(binder.getBindingResult());
+                }
+            }
+        }
+
+        <span class="hljs-comment">// Add resolved attribute and BindingResult at the end of the model</span>
+
+        <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">Object</span>&gt; bindingResultModel = binder.getBindingResult().getModel();
+        mavContainer.removeAttributes(bindingResultModel);
+        mavContainer.addAllAttributes(bindingResultModel);
+
+        <span class="hljs-keyword">return</span> binder.getTarget();
+    }</code></pre>
+<ul>
+<li>该方法的职责是实例化一个parameterType的对象，然后根据request和attribute、name创建一个WebDataBinder对象，其中。然后进入bindRequestParameters方法绑定，根据reqeust中的参数创建一个MutablePropertyValues对象。MutablePropertyValues里面存放了一个或多个PropertyValue，其中PropertyValue用于保存单个bean属性的相关信息，比如参数名、参数值。这里需要注意的是PropertyValue并不是保存request对象的所有参数属性信息。而是一个参数属性对应一个PropertyValue。比如这里的reqeust对象，携带了两个参数，name和age，便会分别创建两个PropertyValue对象。对应的MutablePropertyValues结构如下图<br>
+<img src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/2.jpg"></li>
+<li>创建MutablePropertyValues对象化后，进入DataBinder.applyPropertyValues(DataBinder.java line737)。会根据刚刚创建的User对象。创建一个BeanWrapperImpl对象，BeanWrapperImpl实现了PropertyAccessor（属性访问器）接口。这是spring-bean下的一个类，在Sping中，对Bean属性的存取都是通过BeanWrapperImpl类来实现的。BeanWarapperImpl在这里作用就是通过PropertyValue中的属性相关描述，注入到BeanWarapperImpl对应的java对象的属性中去。具体注入的方法是setPropertyValues，这个方法略复杂。它的职责简单总结起来就是根据属性名调用对应的set...方法。比如注入User对象的name属性时，通过反射获取setName方法。如果有该方法便调用。这也是为什么在定义SpringMVC model 对象需要set...方法。如果没有set方法，参数注入便会失败。</li>
+</ul>
+<h3 id="参数解析绑定总结">参数解析绑定总结</h3>
+<ol>
+<li>SpringMVC初始化时，RequestMappingHandlerAdapter类会把一些默认的参数解析器添加到argumentResolvers中。当SpringMVC接收到请求后首先根据url查找对应的HandlerMethod。</li>
+<li>遍历HandlerMethod的MethodParameter数组</li>
+<li>根据MethodParameter的类型来查找确认使用哪个HandlerMethodArgumentResolver，遍历所有的argumentResolvers的supportsParameter(MethodParameter parameter)方法。。如果返回true，则表示查找成功，当前MethodParameter，使用该HandlerMethodArgumentResolver。这里确认大多都是根据参数的注解已经参数的Type来确认。</li>
+<li>解析参数，从request中解析出MethodParameter对应的参数，这里解析出来的结果都是String类型。</li>
+<li>转换参数，把对应String转换成具体方法所需要的类型，这里就包括了基本类型、对象、List、Set、Map。</li>
+</ol>
+<h2 id="总结">总结</h2>
+<ul>
+<li>解析所使用代码已上传至github，https://github.com/wycm/SpringMVC-Demo</li>
+<li>以上源码是基于SpringMVC 3.2.2.RELEASE版本。以上便是SpringMVC参数解析绑定的主要过程，希望对大家有帮助。本文可能有错误，希望读者能够指出来。</li>
+</ul>
+<blockquote>
+<p>版权声明<br>
+作者：wycm<br>
+出处：https://www.cnblogs.com/w-y-c-m/p/8443892.html<br>
+您的支持是对博主最大的鼓励，感谢您的认真阅读。<br>
+本文版权归作者所有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。<br>
+<img src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/9.png" alt="一个程序员日常分享，包括但不限于爬虫、Java后端技术，欢迎关注"></p>
+</blockquote>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/w-y-c-m/p/8416630.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/w-y-c-m/p/8416630.html" title="发布于 2018-02-05 11:05">SpringMVC源码之Controller查找原理</a>
+    <br>
+    <a href="https://www.cnblogs.com/w-y-c-m/p/9237335.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/w-y-c-m/p/9237335.html" title="发布于 2018-06-29 10:15">Apache HttpClient4使用教程</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2018-02-12 10:54</span>&nbsp;<a href="https://www.cnblogs.com/w-y-c-m/">卧颜沉默</a> 阅读(<span id="post_view_count">7733</span>) 评论(<span id="post_comment_count">1</span>) <a href="https://i.cnblogs.com/EditPosts.aspx?postid=8443892" rel="nofollow"> 编辑</a> <a href="javascript:void(0)" onclick="AddToWz(8443892); return false;">收藏</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/highlight.min.js.下载"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 343601, cb_blogApp = 'w-y-c-m', cb_blogUserGuid = '03c82a2d-6c10-e711-845c-ac853d9f53ac';
+    var cb_entryId = 8443892, cb_entryCreatedDate = '2018-02-12 10:54', cb_postType = 1; 
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder">
+
+<div id="comment_pager_top">
+    
+</div>
+
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"><div class="feedbackNoItems"></div></div>	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;
+
+<span class="comment_actions">
+    
+    
+    
+    
+</span>
+
+
+				</div>
+				
+<a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html#4250947" class="layer">#1楼</a>
+<a name="4250947" id="comment_anchor_4250947"></a>
+
+        <span id="comment-maxId" style="display:none">4250947</span>
+        <span id="comment-maxDate" style="display:none">2019/5/8 下午4:28:22</span>
+ 
+<span class="comment_date">2019-05-08 16:28</span>
+
+ 
+
+            <a id="a_comment_author_4250947" href="https://www.cnblogs.com/yitaqi/" target="_blank">_yitaqi</a>
+
+			</div>
+			<div class="feedbackCon">
+				
+<div id="comment_body_4250947" class="blog_comment_body">
+    nice
+</div>
+        <div class="comment_vote">
+            <a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(&#39;4250947&#39;, &#39;Digg&#39;, this);" style="color: red;">请先<a href="javascript:void(0);" onclick="login()">登录</a></a>
+            <a href="javascript:void(0);" class="comment_burry" onclick="return voteComment(&#39;4250947&#39;, &#39;Bury&#39;, this);">
+                反对(0)
+            </a>
+        </div>
+        
+
+			</div>
+		</div>
+
+<div id="comment_pager_bottom">
+    
+</div>
+
+
+</div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html#top">返回顶部</a></div>
+    <div id="comment_form_container"><div class="login_tips">
+    注册用户登录后才能发表评论，请 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a>
+     或 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页。
+</div></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-工控&#39;)">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="http://clickc.admaster.com.cn/c/a131574,b3595115,c1705,i0,m101,8a1,8b3,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为云微认证&#39;)">【推荐】零基础轻松玩转华为云产品，获壕礼加返百元大礼</a><br><a href="https://www.ctyun.cn/activity/#/campus?hmsr=%E5%8D%9A%E5%AE%A2%E5%9B%AD-0911-%E4%BA%91%E5%88%9B%E6%A0%A1%E5%9B%AD&amp;hmpl=&amp;hmcu=&amp;hmkw=&amp;hmci=" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-天翼云&#39;)">【推荐】天翼云开学季，学生必备云套餐，每月仅需9块9</a><br><a href="http://clickc.admaster.com.cn/c/a131575,b3595121,c1705,i0,m101,8a1,8b3,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为文字&#39;)">【推荐】华为云文字识别资源包重磅上市，1元万次限时抢购</a><br><a href="https://www.cnblogs.com/cmt/p/11505603.html" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为云代金券&#39;)">【福利】git pull &amp;&amp; cherry-pick 博客园&amp;华为云百万代金券</a><br></div>
+    <div id="opt_under_post"></div>
+    <script async="async" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/gpt.js.下载"></script>
+    <script>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+    </script>
+    <script>
+        googletag.cmd.push(function () {
+            googletag.defineSlot("/1090369/C1", [300, 250], "div-gpt-ad-1546353474406-0").addService(googletag.pubads());
+            googletag.defineSlot("/1090369/C2", [468, 60], "div-gpt-ad-1539008685004-0").addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    </script>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CLnnkJ_qyuQCFY02lgodVfIGvg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="SpringMVC源码之Controller查找原理" href="https://www.cnblogs.com/w-y-c-m/p/8416630.html" target="_blank" onclick="clickRecomItmem(8416630)">SpringMVC源码之Controller查找原理</a><br>·  <a title="SpringMVC源码解析 - HandlerMethod" href="https://www.cnblogs.com/leftthen/p/5229204.html" target="_blank" onclick="clickRecomItmem(5229204)">SpringMVC源码解析 - HandlerMethod</a><br>·  <a title="SpringMVC源码解析 - HandlerMethod" href="https://www.cnblogs.com/softidea/p/5907658.html" target="_blank" onclick="clickRecomItmem(5907658)">SpringMVC源码解析 - HandlerMethod</a><br>·  <a title="Spring源码研究：数据绑定" href="https://www.cnblogs.com/guangshan/p/4431800.html" target="_blank" onclick="clickRecomItmem(4431800)">Spring源码研究：数据绑定</a><br>·  <a title="SpringMVC 参数绑定注解解析" href="https://www.cnblogs.com/morethink/p/8028664.html" target="_blank" onclick="clickRecomItmem(8028664)">SpringMVC 参数绑定注解解析</a><br></div></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CP_Vj5_qyuQCFY02lgodVfIGvg">
+            
+        <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="2" data-load-complete="true" src="./SpringMVC源码之参数解析绑定原理 - 卧颜沉默 - 博客园_files/saved_resource(1).html"></iframe></div></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·              <a href="https://news.cnblogs.com/n/636938/" target="_blank">刚刚升空的这颗卫星，可以一眼看遍北京城</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/636937/" target="_blank">漫画 | 如何顶着最大的压力，在工作时间摸鱼？</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/636936/" target="_blank">Google员工吐槽TypeScript：类型检查不太好</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/636935/" target="_blank">要啥给啥的写作AI：新闻评论小说都能编，题材风格随便选</a>
+            <br>
+ ·              <a href="https://news.cnblogs.com/n/636934/" target="_blank">GitHub社区女性只占3%？AI向善需要女性力量觉醒</a>
+            <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+        deliverAdT2();
+        deliverAdC1();
+        deliverAdC2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/w-y-c-m/">
+            卧颜沉默
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/w-y-c-m/" title="入园时间：2017-03-24">
+            2年5个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/w-y-c-m/followers/">
+            30
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/w-y-c-m/followees/">
+            2
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;03c82a2d-6c10-e711-845c-ac853d9f53ac&#39;)">+加关注</a></div>
+        <script>getFollowStatus('03c82a2d-6c10-e711-845c-ac853d9f53ac');</script>
+    </div>
+</div>
+
+</div>
+
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/08/12&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2019年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/10/12&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+                    <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+                    <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+                    <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+                    <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+                    <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+                    <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+                    <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+        </tr>
+            <tr>
+                        <td class="CalWeekendDay" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                        <td class="" align="center">
+                            5
+                        </td>
+                        <td class="" align="center">
+                            6
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        7
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            8
+                        </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                            <td class="CalTodayDay" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            14
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            15
+                        </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            21
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            22
+                        </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            28
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            29
+                        </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            5
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            6
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                10
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                11
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            12
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    <div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+		<li>
+
+<a href="https://www.cnblogs.com/w-y-c-m/p/" title="我的博客的随笔列表">我的随笔</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/w-y-c-m/MyComments.html" title="我的发表过的评论列表">我的评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/w-y-c-m/OtherPosts.html" title="我评论过的随笔列表">我的参与</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/w-y-c-m/RecentComments.html" title="我的博客的评论列表">最新评论</a>
+</li>
+		<li>
+
+<a href="https://www.cnblogs.com/w-y-c-m/tag/" title="我的博客的标签列表">我的标签</a>
+</li>
+
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div>
+
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+    <div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/java/">java</a>(8)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/%E7%88%AC%E8%99%AB/">爬虫</a>(5)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/">网络爬虫</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/%E6%BA%90%E7%A0%81/">源码</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/SpringMVC/">SpringMVC</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/selenium/">selenium</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/Jsoup/">Jsoup</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/jvm/">jvm</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/gc/">gc</a>(2)
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/w-y-c-m/tag/http/">http</a>(1)
+        </li>
+            <li>
+                <a href="https://www.cnblogs.com/w-y-c-m/tag/">更多</a>
+            </li>
+
+</ul>
+</div>
+
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+        <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+            <h3 class="catListTitle">
+                
+
+随笔档案
+
+
+
+            </h3>
+
+
+            <ul>
+
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2019/05.html" rel="" target="">
+    2019年5月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2019/03.html" rel="" target="">
+    2019年3月(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2018/11.html" rel="" target="">
+    2018年11月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2018/06.html" rel="" target="">
+    2018年6月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2018/02.html" rel="" target="">
+    2018年2月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2017/08.html" rel="" target="">
+    2017年8月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2017/05.html" rel="" target="">
+    2017年5月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/w-y-c-m/archive/2017/04.html" rel="" target="">
+    2017年4月(2)
+</a>
+ 
+
+                        </li>
+
+            </ul>
+
+
+        </div>
+
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block">
+    <div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/w-y-c-m/p/8416630.html#4295103">1. Re:SpringMVC源码之Controller查找原理</a></li>
+                    <li class="recent_comment_body">老哥，很nice</li>
+                    <li class="recent_comment_author">--java小新人</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html#4250947">2. Re:SpringMVC源码之参数解析绑定原理</a></li>
+                    <li class="recent_comment_body">nice</li>
+                    <li class="recent_comment_author">--_yitaqi</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/w-y-c-m/p/9237335.html#4249683">3. Re:Apache HttpClient4使用教程</a></li>
+                    <li class="recent_comment_body">@ 咸鱼翻身不能...</li>
+                    <li class="recent_comment_author">--卧颜沉默</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/w-y-c-m/p/10533361.html#4249678">4. Re:无界面Ubuntu服务器搭建selenium+chromedriver+VNC运行环境</a></li>
+                    <li class="recent_comment_body">@ 咸鱼翻身最好通过打开多个tab页的方式，提高速度...</li>
+                    <li class="recent_comment_author">--卧颜沉默</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/w-y-c-m/p/10605198.html#4249676">5. Re:【java+selenium】网易云音乐刷累计听歌数</a></li>
+                    <li class="recent_comment_body">@ 咸鱼翻身比直接请求会慢很多。一分钟多少量得看具体的网页...</li>
+                    <li class="recent_comment_author">--卧颜沉默</li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    <div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html">
+                            1. SpringMVC源码之参数解析绑定原理(7733)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/6772846.html">
+                            2. 从零实现一个高性能网络爬虫（一）网络请求分析及代码实现(3868)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/7359455.html">
+                            3. selenium+java破解滑动验证码(2881)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/9919717.html">
+                            4. 一次频繁Full GC问题排查过程分享(2757)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/6879551.html">
+                            5. 从零实现一个高性能网络爬虫（二）应对反爬虫之前端数据混淆(2450)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    <div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/6879551.html">
+                            1. 从零实现一个高性能网络爬虫（二）应对反爬虫之前端数据混淆(12)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/7359455.html">
+                            2. selenium+java破解滑动验证码(11)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/10499505.html">
+                            3. 一次ygc越来越慢的问题排查过程(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/9919717.html">
+                            4. 一次频繁Full GC问题排查过程分享(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/w-y-c-m/p/10605198.html">
+                            5. 【java+selenium】网易云音乐刷累计听歌数(3)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+    
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/w-y-c-m/p/6772846.html">
+                                1. 从零实现一个高性能网络爬虫（一）网络请求分析及代码实现(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/w-y-c-m/p/8416630.html">
+                                2. SpringMVC源码之Controller查找原理(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/w-y-c-m/p/7359455.html">
+                                3. selenium+java破解滑动验证码(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/w-y-c-m/p/8443892.html">
+                                4. SpringMVC源码之参数解析绑定原理(4)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/w-y-c-m/p/6726646.html">
+                                5. windows下使用wineshark分析抓取本地回环包(3)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2019 卧颜沉默
+<br><span id="poweredby">Powered by .NET Core 3.0.0-preview9-19423-09 on Linux</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+
+</body></html>
