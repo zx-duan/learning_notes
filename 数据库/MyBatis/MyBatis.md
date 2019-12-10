@@ -22,7 +22,7 @@ Mapper组件 = Mapper接口 +  Mapper.XML 文件
 
 
 
-![1573179841278](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573179841278.png)
+![1573179841278](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573179841278.png)
 
 通过打印接接口，发现打印的是：class com.sun.proxy.$Proxy5，底层使用的是动态代理 , 生成Mapper接口的实现类
 
@@ -48,7 +48,7 @@ MyBatis中的缓存分为**一级缓存**与**二级缓存** , 其中一级缓�
 
 <font style="color:red">**一级缓存是与Session绑定的**</font>
 
-![1573211065759](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573211065759.png)
+![1573211065759](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573211065759.png)
 
 ==一级缓存的性能提升是有限度的 , 因为每次操作都需要创建一个新的SqlSession== , 而Session之间是不共享数据的所以一级缓存对我们的帮助并不大
 
@@ -97,13 +97,13 @@ MyBatis分为一级缓存与二级缓存 , 一级缓存放是与Session绑定的
 
 ##### 缓存的问题
 
-![1573211804862](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573211804862.png)
+![1573211804862](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573211804862.png)
 
 当修改的时候 , 由于请求是从内存中获取数据的 , 所以可能会造成读取假数据的情况 , 如果设置修改数据就会清空缓存的时候 , 就会造成容易因为一条数据的修改清空所有的缓存
 
 ##### **缓存性能相关属性**
 
-![1573212793632](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573212793632.png)
+![1573212793632](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573212793632.png)
 
 
 
@@ -111,11 +111,11 @@ MyBatis分为一级缓存与二级缓存 , 一级缓存放是与Session绑定的
 
 1. 在全局配置中开启
 
-![1573213297099](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573213297099.png)
+![1573213297099](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573213297099.png)
 
 ​	2.在Mapper中开启
 
-​						![1573213325164](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1573213325164.png)
+​						![1573213325164](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1573213325164.png)
 
 ​	3.被缓存的对象必须要实现序列化的接口
 

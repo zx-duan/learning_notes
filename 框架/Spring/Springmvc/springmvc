@@ -61,7 +61,7 @@ JSF
 #### 参数设置
 
 1. ##### 参数设置
-    
+  
     1. 从jsp访问到servlet的过程中会有请求参数产生:如果请求参数很多需要些很多`setAttrbiute();` / `getAttrbiute();`
     * 旧的方式
     getParmert()
@@ -87,7 +87,7 @@ JSF
 	    ```
 	    >`如果要穿入List,需要将List封装到对象中`
 2. ##### 文件上传
-    
+  
     1. 以往的文件上传需要 获取表单内的内容`使用SpringMVC优化了这些内容可以用这么麻烦的获取`
     * 旧的
         1. 填写表单
@@ -113,14 +113,14 @@ JSF
   
     1. 以往的表单验证需要获取到从表单传递过来的数据并且还需要封装,如果数据很多代码的冗余也很多`使用SpringMVC可以让底层代码自动获取`
 4. ##### 时间配置
-    
+  
 1. `因为在SpringMVC中属性都是以参数的形式传递,当遇到了需要传递时间的参数时怎么办?`
-    
+  
         使用注解:
         ```java
 	        public String hello(@DateTimeFormat(pattern = "yyyy-MM-dd") Date u) {
-		        System.out.println(u.toLocaleString());
-		        return "/WEB-INF/hellocontrol.jsp";
+	            System.out.println(u.toLocaleString());
+	            return "/WEB-INF/hellocontrol.jsp";
             }
         ```
     2. `更多的时候，Date 参数都是作为对象的字段存在，此时需要在该字段上贴`
@@ -133,20 +133,20 @@ JSF
         ```
     3. `在控制器中注册自定义属性编辑器`
     ![img](img\date.png)
-    
+   
     4. 国际化
         ```xml
 	    <dependency>
             <groupId>org.apache.taglibs</groupId>
-    	    <artifactId>taglibs-standard-spec</artifactId>
-    	    <version>1.2.5</version>
+   	 	    <artifactId>taglibs-standard-spec</artifactId>
+   	 	    <version>1.2.5</version>
         </dependency>
 	    <dependency>
 	        <groupId>org.apache.taglibs</groupId>
 	        <artifactId>taglibs-standard-impl</artifactId>
             <version>1.2.5</version>
         </dependency>
-        ```
+       ```
         ![img](img\fmt标签.png)
 
 
@@ -170,7 +170,7 @@ JSF
 
 SpringMvc的执行流程
 
-![1568271427497](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568271427497.png)
+![1568271427497](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1568271427497.png)
 
 > 2.1、用户发送出请求到前端控制器 DispatcherServlet。
 > 2.2、DispatcherServlet 收到请求调用 HandlerMapping（处理器映射器）。

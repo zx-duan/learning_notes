@@ -18,7 +18,7 @@
 
 两者最大的不同点在于 MyIsam只适合用来查询并且是不支持事务的 , 而Innodb更适合用来做一些带有事务的DML操作 , 以下是两者功能对照图
 
-​								![1572520100317](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572520100317.png)
+​								![1572520100317](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572520100317.png)
 
 > **InnoDB**
 >
@@ -54,9 +54,9 @@ InnoDB与MyISAM这两种索引结构均为 ==B+Tree== 该索引结构最大的�
 
 图 1
 
-![1572521071812](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521071812.png)
+![1572521071812](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572521071812.png)
 
-![1572521103023](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521103023.png)
+![1572521103023](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572521103023.png)
 
 > mysql中索引的介绍
 >
@@ -78,7 +78,7 @@ InnoDB与MyISAM这两种索引结构均为 ==B+Tree== 该索引结构最大的�
 
 图 2
 
-​		![1572521398698](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521398698.png)
+​		![1572521398698](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572521398698.png)
 
 
 
@@ -99,7 +99,7 @@ InnoDB与MyISAM这两种索引结构均为 ==B+Tree== 该索引结构最大的�
 
 MyISAM引擎使用B+Tree作为索引结构，==叶节点的data域存放的是数据记录的地址==。
 
-![1572521757589](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572521757589.png)
+![1572521757589](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572521757589.png)
 
 **注 : 叶节点是上面红色线的部分**
 
@@ -107,7 +107,7 @@ MyISAM引擎使用B+Tree作为索引结构，==叶节点的data域存放的是�
 
 在MyIsam中 , 主节点是唯一切有序的 , **通过平衡树算法判断索引的位置 , 然后根据data中记录的数据地址 , 去另一个数据空间根据地址进行查找** , 严格意义上来讲 , MyIsam的查询执行了两次
 
-​											![1572522024625](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522024625.png)
+​											![1572522024625](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572522024625.png)
 
 **总结**  :
 
@@ -130,7 +130,7 @@ MyISAM引擎使用B+Tree作为索引结构，==叶节点的data域存放的是�
 
 [图 4](为InnoDB的主索引) 
 
-![1572522417135](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522417135.png)
+![1572522417135](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572522417135.png)
 
 原理:
 
@@ -138,11 +138,11 @@ MyISAM引擎使用B+Tree作为索引结构，==叶节点的data域存放的是�
 
 <font style="color:red">这种索引也被称为 **聚簇索引**</font>
 
-![1572522782473](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522782473.png)
+![1572522782473](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572522782473.png)
 
 辅助索引
 
-![1572522850949](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572522850949.png)
+![1572522850949](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572522850949.png)
 
 > 总结 : 
 >
@@ -202,7 +202,7 @@ select_type 查询的类型
 
 type 这个类型代表了查询的速度
 
-![1572525310539](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572525310539.png)
+![1572525310539](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572525310539.png)
 
 
 

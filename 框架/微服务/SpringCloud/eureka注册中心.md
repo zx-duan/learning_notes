@@ -38,11 +38,11 @@ eureka与zookeeper在本质上的功能是没有什么不同的, 不过eureka是
 
 dubbo
 
-![1571385943875](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571385943875.png)
+![1571385943875](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571385943875.png)
 
 eureka
 
-![1571387026523](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571387026523.png)
+![1571387026523](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571387026523.png)
 
 
 
@@ -50,7 +50,7 @@ eureka
 
 注册中心远程调用访问执行流程
 
-![1571387487647](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571387487647.png)
+![1571387487647](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571387487647.png)
 
 
 

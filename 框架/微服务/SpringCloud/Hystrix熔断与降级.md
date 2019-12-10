@@ -46,7 +46,7 @@
 
 图解: 
 
-![1571444355053](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571444355053.png)
+![1571444355053](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571444355053.png)
 
 
 
@@ -224,7 +224,7 @@ feign:
 
 ​		**在默认使用线城池的方式时线程内的对象无法获取**
 
-![1571464257935](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571464257935.png)
+![1571464257935](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571464257935.png)
 
 ​		**产生的原因**
 
@@ -338,7 +338,7 @@ Hystrix的默认采用的是线城池的熔断隔离机制
 
 ​		 图解:
 
-​	![1571464245333](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571464245333.png)
+​	![1571464245333](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571464245333.png)
 
 
 
@@ -431,5 +431,5 @@ management:
 
 参数
 
-![1571464950777](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571464950777.png)
+![1571464950777](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571464950777.png)
 

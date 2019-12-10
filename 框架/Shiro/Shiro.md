@@ -12,7 +12,7 @@ Shiro可以非常容易的开发出足够好的应用，其不仅可以用在Jav
 
 Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authenticator(认证器)，Authorizer(用户访问控制权)， SessionManager(会话管理器)，CacheManager(缓存组件)，Cryptography，Realms(数据连接结果集)。 
 
-![1564899439970](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564899439970.png)
+![1564899439970](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564899439970.png)
 
 
 
@@ -181,7 +181,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 *提交到后台，后台通过访问数据库执行账号密码的正确性校验。* 
 
-![1564900079684](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564900079684.png)
+![1564900079684](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564900079684.png)
 
 
 
@@ -193,13 +193,13 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 #### Shiro如何实现登录验证
 
-![1564888318774](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564888318774.png)
+![1564888318774](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564888318774.png)
 
 
 
 ##### 认证的执行流程
 
-![1565234827191](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1565234827191.png)
+![1565234827191](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1565234827191.png)
 
 
 
@@ -261,7 +261,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 *认证过滤器通过<font style="color:red">认证器</font>做出的判断认证来设置认证成功或者失败后要做什么事情,因为框架不会知道我们的想法,所以我们需要在实现一个认证过滤器来告诉框架我们在认证成功或者失败后要做什么事情* 
 
-![1565265681013](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1565265681013.png)
+![1565265681013](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1565265681013.png)
 
 - 1) 创建一个实现类来继承<font style="color:red">FormAuthenticationFilter</font>类并重写内部的<font style="color:red">onLoginFailure</font>(失败)方法 和<font style="color:red">onLoginSuccess</font>(成功)方法
 
@@ -349,7 +349,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 在方法的内容代码中判断当前的请求是否包含访问权限
 
-![1564912250685](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564912250685.png)
+![1564912250685](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564912250685.png)
 
 > 这种方式有个缺陷就是按照正常逻辑来判断,如果当前登录的用户没有权限, 不应该让他访问控制器中的方法 , 如果频繁的访问会造成资源的浪费
 
@@ -359,7 +359,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 在页面 使用 shiro的标签来隐藏掉那些没有权限的操作
 
-![1564912388699](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564912388699.png)
+![1564912388699](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564912388699.png)
 
 > 这种方式的坏处就是, 如果当前登录的用户是一个开发人员, 可以通过浏览器地址上面的请求访问那些被隐藏的方法
 
@@ -373,7 +373,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 在控制器的方法上面贴上Shiro权限认证的注解用来指定当前的方法是否需要权限注入
 
-![1564912490170](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564912490170.png)
+![1564912490170](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564912490170.png)
 
 这种方式目前比较适用 , 操作简单
 
@@ -381,7 +381,7 @@ Shiro主要组件包括：Subject，SecurityManager(安全管理器)，Authentic
 
 ##### 注解开发需要的三方参与
 
-![1564912743507](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1564912743507.png)
+![1564912743507](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1564912743507.png)
 
 
 

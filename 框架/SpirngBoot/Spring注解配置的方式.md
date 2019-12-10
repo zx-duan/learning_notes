@@ -44,11 +44,11 @@
 
 1. 定义一个配置类来替代xml配置文件返回一个Bean对象来交给Spring来管理
 
-   ![1567076027894](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567076027894.png)
+   ![1567076027894](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567076027894.png)
 
 2. 加载配置类, 启动`AnnotationConfifigApplicationContext`容器对象,测试结果
 
-![1567076068395](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567076068395.png)
+![1567076068395](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567076068395.png)
 
 
 
@@ -137,7 +137,7 @@
 >
 > 运行结果
 >
-> ![1567077930970](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567077930970.png)
+> ![1567077930970](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567077930970.png)
 
 
 
@@ -180,7 +180,7 @@ ps:谁导入别人谁是主配置
 >
 > 运行结果:
 >
-> ![1567078493060](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567078493060.png)
+> ![1567078493060](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567078493060.png)
 
 
 
@@ -205,7 +205,7 @@ ps:谁导入别人谁是主配置
 
 ==参数是mapper的路径地址==
 
-![1567927912597](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567927912597.png)
+![1567927912597](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567927912597.png)
 
 
 
@@ -215,7 +215,7 @@ ps:谁导入别人谁是主配置
 
 在以往的时候我们在xml的文件中配置处理器来处理我们的db.properties(数据库连接配置文件)
 
-![1567078730146](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567078730146.png)
+![1567078730146](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567078730146.png)
 
 现在没有xml我们如何配置属性文件呢?
 
@@ -274,13 +274,13 @@ ps:谁导入别人谁是主配置
 >
 > db.properties
 >
-> ![1567079744534](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567079744534.png)
+> ![1567079744534](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567079744534.png)
 >
 > 
 >
 > 运行结果
 >
-> ![1567079709320](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567079709320.png)
+> ![1567079709320](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567079709320.png)
 
 ###### 环境的切换
 
@@ -359,5 +359,5 @@ ps:谁导入别人谁是主配置
 >
 > 运行结果
 >
-> ![1567081523869](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567081523869.png)
+> ![1567081523869](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567081523869.png)
 

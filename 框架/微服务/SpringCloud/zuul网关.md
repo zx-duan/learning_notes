@@ -118,7 +118,7 @@ nginx + lua
 
 网关底层的过滤执行流程图 : 
 
-![1571493224840](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571493224840.png)
+![1571493224840](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571493224840.png)
 
 Zuul的中心是一系列过滤器，它们能够在HTTP请求和响应的路由期间执行一系列操作。
 
@@ -144,7 +144,7 @@ Zuul的中心是一系列过滤器，它们能够在HTTP请求和响应的路由
 
 #### 4.1.4 网关的结构图
 
-![1571491111037](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571491111037.png)
+![1571491111037](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571491111037.png)
 
 通常情况下我们的网关也是需要做集群处理的 , 在外部使用nginx来进行请求的分发 , 将不同的请求负载均衡到我们的网关上面 , 然后网关在从注册中心获取地址拼接, 再负载均衡进行请求分发
 

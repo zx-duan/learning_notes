@@ -45,10 +45,10 @@ shiro的执行是怎样的,如何过滤是否登录, 如何过滤动态资源
 
    `还需要设置数据源集成授权的数据源`(集成Shiro内部的数据源让他重写)
 
-   ![1562456663532](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1562456663532.png)
+   ![1562456663532](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1562456663532.png)
 
    
 
      需要设置响应回来的数据做什么这时候需要需要自己创建一个过滤响应器用来响应成功或者失败分别做什么
 
-   ​	![1562456985542](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1562456985542.png)
+   ​	![1562456985542](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1562456985542.png)

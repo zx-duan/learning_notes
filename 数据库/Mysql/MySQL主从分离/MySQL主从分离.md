@@ -2,7 +2,7 @@
 
 1.新建一个虚拟机用来当做主机器 设置虚拟机的ip为静态ip
 
-![1572681910226](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572681910226.png)
+![1572681910226](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572681910226.png)
 
 
 

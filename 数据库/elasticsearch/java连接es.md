@@ -27,7 +27,7 @@ spring.data.elasticsearch.cluster-nodes=localhost:9300	//设置连接号
 spring.main.banner-mode=off
 ```
 
-![1567682087201](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567682087201.png)
+![1567682087201](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567682087201.png)
 
 > elasticsearch要和图片上的对应
 

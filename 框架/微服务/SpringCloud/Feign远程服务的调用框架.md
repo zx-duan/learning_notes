@@ -86,7 +86,7 @@ public interface ProductFeignApi {
 
 ##### 03.在product-server项目中添加ProductFeignApi的实现类(本质上就是个Controller),注意要把之前的controller删除掉.
 
-![1571392829707](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571392829707.png)
+![1571392829707](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571392829707.png)
 
 
 
@@ -127,4 +127,4 @@ public class ProductFeignClient implements ProductFeignApi {
 
 ##### 05.把之前RestTemplate的远程调用替换成Feign方式调用即可 （注意product-api和order-server中包名的问题.）
 
-![1571393048997](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571393048997.png)
+![1571393048997](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571393048997.png)

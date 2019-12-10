@@ -21,13 +21,13 @@ MongoDB是一种非关系型数据库 , 相比Redis , 可以执行更多更复�
 - 易使用 
 - 非常方便的存储数据
 
-![1567476614041](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567476614041.png)
+![1567476614041](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567476614041.png)
 
 ### 数据库的结构 
 
  MongoDB是非关系型数据库 , 是没有表的概念的,该数据库存储的数据结构是集合 , 集合中每一个元素是一个文档(类似于树状的结构)
 
-![1567477127549](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567477127549.png)
+![1567477127549](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567477127549.png)
 
 
 
@@ -45,7 +45,7 @@ MongoDB中有很多操作指令, 不同的指令有不同的数据格式 , 需�
 
 在使用了navcat连接MongoDB后可以使用命令操作数据库
 
-![1567477616436](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567477616436.png)
+![1567477616436](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567477616436.png)
 
 
 
@@ -116,7 +116,7 @@ db.users.insert({id:4,name:"狗子",age:19})
 
 db. 集合名. 更新语句 ( update... )( { 修改条件 } , { $set : { 修改的元素 , 修改的元素 } } )
 
-![1567479285660](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567479285660.png)
+![1567479285660](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567479285660.png)
 
 **参数说明**
 
@@ -149,7 +149,7 @@ db.users.updateOne({name:"狗子"},{$set:{age:30,name:"大天狗"}})
 
 **语法**
 
-![1567479719564](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567479719564.png)
+![1567479719564](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567479719564.png)
 
 **参数说明**
 
@@ -369,7 +369,7 @@ List<User> findByName(String name);
 
 
 
-![1567495350500](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567495350500.png)
+![1567495350500](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567495350500.png)
 
 ###### **API大全**
 

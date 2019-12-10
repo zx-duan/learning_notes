@@ -75,7 +75,7 @@
 
 2.在需要写日志的类上贴`@Slf4j`,然后再消费者中打印日志。
 
-![1571495018214](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571495018214.png)
+![1571495018214](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571495018214.png)
 
 
 

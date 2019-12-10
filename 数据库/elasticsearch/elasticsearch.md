@@ -12,13 +12,13 @@ Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布�
 
 查询或者模糊查询的执行是获取到`关键字`然后去每一个对象中去匹配 和当前关键字是否相等 如果相等则匹配下一个字符是否相等 , 这样在数据很多的情况下 , `查询时及其浪费性能`几乎没有任何一家大型公司是使用普通的查询
 
-![1567602713021](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567602713021.png)
+![1567602713021](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567602713021.png)
 
 **使用后**
 
 Elasticsearch通过`分词器`这个东西将文档的内容分词提取出来,整理成一个特殊的文档 , 在做查询操作的时候会建立<font style="color:red">`倒排索引`</font>来辅助查询 , 当用户查询的时候会匹配文档内容中的词 , 首先省去了每个字母每个字母循环匹配的麻烦, 然后如果查到传递的参数符合分词后的单词 , 则找当前单词的文档 id 循环文档 id 然后将查询结果返回给客户端 , 这样将查询的性能提升到了极致
 
-![1567603066394](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603066394.png)
+![1567603066394](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603066394.png)
 
 
 
@@ -32,7 +32,7 @@ Elasticsearch通过`分词器`这个东西将文档的内容分词提取出来,�
 >
 > 这里我们使用 `Elasticsearch`  `kIbana` 日志处理先不研究
 
-![1567603333349](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603333349.png)
+![1567603333349](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603333349.png)
 
 
 
@@ -46,25 +46,25 @@ Elasticsearch通过`分词器`这个东西将文档的内容分词提取出来,�
 
    直到页面出现
 
-   ![1567603654964](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603654964.png)
+   ![1567603654964](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603654964.png)
 
    代表已经安装成功
 
 2. 将`elasticsearch`添加到后台管理服务
 
-   ![1567603725436](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603725436.png)
+   ![1567603725436](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603725436.png)
 
-   ![1567603734145](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603734145.png)
+   ![1567603734145](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603734145.png)
 
 3. 安装head插件
 
-   ![1567603774908](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603774908.png)
+   ![1567603774908](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603774908.png)
 
 4. <font style="color:red">安装**kibana**</font>
 
    解压Kibana安装包 , 运行bin/kibana.bat，看到启动成功的端口号即可以使用浏览器来使用了
 
-   ![1567603846731](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603846731.png)
+   ![1567603846731](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603846731.png)
 
 
 
@@ -72,7 +72,7 @@ Elasticsearch通过`分词器`这个东西将文档的内容分词提取出来,�
 
 #### 数据存储图
 
-![1567603909992](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567603909992.png)
+![1567603909992](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567603909992.png)
 
 > 其中 在创建的时候 索引就是数据库 , 映射是用来做规定用的 , 每一个索引里面只能有一个映射 并且在创建索引的同时也创建了映射 , <font style="color:red">ES6开始索引和类名保持一致</font>
 
@@ -111,7 +111,7 @@ Shard有两种类型：primary和replica，即主shard及副本shard。Primary s
 
 >  由于`elasticsearch`是遵循Resulf的规范的 , 所以在创建索引的时候将请求 写成put就可以完成对索引的创建 , <font style="color:red">并且最好在创建索引的同时创建映射, 因为往已经存在的索引里面放映射很难</font>
 
-![1567605804459](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567605804459.png)
+![1567605804459](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567605804459.png)
 
 
 
@@ -212,7 +212,7 @@ elasticsearch中的核心组件之一 , <font style="color:red">分词器的作�
 
 将中文分词器解压 然后创建一个文件夹 把配置放进去 最后将这个文件夹放到elasticsearch的插件文件夹下面
 
-![1567604707280](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567604707280.png)
+![1567604707280](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567604707280.png)
 
 ##### 使用
 
@@ -224,7 +224,7 @@ elasticsearch中的核心组件之一 , <font style="color:red">分词器的作�
 
 效果展示:
 
-> ![1567604801415](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567604801415.png)
+> ![1567604801415](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567604801415.png)
 
 代码展示:
 
@@ -240,7 +240,7 @@ elasticsearch中的核心组件之一 , <font style="color:red">分词器的作�
 
 效果展示:
 
-> ![1567605016679](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567605016679.png)
+> ![1567605016679](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567605016679.png)
 
 代码展示
 
@@ -305,7 +305,7 @@ elasticsearch中的核心组件之一 , <font style="color:red">分词器的作�
 >
 > 每一个文档都有一段
 >
-> ![1567606504592](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567606504592.png)
+> ![1567606504592](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567606504592.png)
 >
 > 其中版本号通常用作乐观锁 而source使我们查询出的数据源
 
@@ -327,7 +327,7 @@ GET /shop_product/shop_product/_search
 
 **效果展示:**
 
-![1567606843204](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567606843204.png)
+![1567606843204](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567606843204.png)
 
 
 
@@ -366,7 +366,7 @@ GET /shop_product/shop_product/_search
 
 **效果展示**
 
-![1567607176914](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567607176914.png)
+![1567607176914](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567607176914.png)
 
 
 

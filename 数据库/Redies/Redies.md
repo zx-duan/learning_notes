@@ -47,11 +47,11 @@ set
 
 ##### String
 
-![String](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344559604.png)
+![String](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344559604.png)
 
 ###### 	写法
 
-> ![1567344602213](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344602213.png)
+> ![1567344602213](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344602213.png)
 >
 > 
 
@@ -95,11 +95,11 @@ cmd
 
 ##### list
 
-![1567344690697](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344690697.png)
+![1567344690697](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344690697.png)
 
 ###### 写法
 
-> ![1567344710923](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344710923.png)
+> ![1567344710923](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344710923.png)
 
 
 
@@ -107,25 +107,25 @@ cmd
 
 ###### 写法
 
-![写法](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344840035.png)
+![写法](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344840035.png)
 
 
 
 ##### hash类型
 
-![1567344900733](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344900733.png)
+![1567344900733](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344900733.png)
 
 ###### 写法
 
-![1567344911913](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344911913.png)
+![1567344911913](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344911913.png)
 
 
 
 ##### set类型
 
-![1567344959703](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344959703.png)
+![1567344959703](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344959703.png)
 
-![1567344987671](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567344987671.png)
+![1567344987671](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567344987671.png)
 
 
 
@@ -133,11 +133,11 @@ cmd
 
 ##### 管理key的命令
 
-![1567345133297](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567345133297.png)
+![1567345133297](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567345133297.png)
 
 ##### 设置密码
 
-![1567345142538](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567345142538.png)
+![1567345142538](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567345142538.png)
 
 
 
@@ -229,21 +229,21 @@ Student student1 = JSON.parseObject(student, Student.class);
 
 ##### **spring data Redis**
 
-> ![1567347632572](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347632572.png)
+> ![1567347632572](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347632572.png)
 >
 > 这种方式特点是将Redis交给Spring来管理 , 只需要在Spring 的配置文件中配置相关的信息就可以使用了
 >
-> ![1567347648606](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347648606.png)
+> ![1567347648606](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347648606.png)
 >
 > 如果使用Spring来管理Redis有两种获取Bean的方式
 >
 > 第一种方式是获取原生的 , 所有保存或者修改数据库内容是由二进制来完成的 , 所以我们看不到也取不出来
 >
-> ![1567347842685](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347842685.png)
+> ![1567347842685](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347842685.png)
 >
-> ![1567347738687](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347738687.png)
+> ![1567347738687](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347738687.png)
 >
-> ![1567347745246](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347745246.png)
+> ![1567347745246](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347745246.png)
 >
 > 
 >
@@ -251,7 +251,7 @@ Student student1 = JSON.parseObject(student, Student.class);
 >
 > 这里我们推荐使用第二种 理由就是方便观看和操作数据库
 >
-> ![1567347802836](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347802836.png)
+> ![1567347802836](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347802836.png)
 >
 > 
 
@@ -313,7 +313,7 @@ template.expire(String token, Long time, TimeUnit.SECONDS);
 
 
 
-![1567347907009](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567347907009.png)
+![1567347907009](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567347907009.png)
 
 > 两种持久化 不同的是 全量的话是每隔60秒就执行一次保存 , 而增量是每隔一秒执行上一秒的操作
 
@@ -321,7 +321,7 @@ template.expire(String token, Long time, TimeUnit.SECONDS);
 
 
 
-![1567691772896](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567691772896.png)
+![1567691772896](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567691772896.png)
 
 
 

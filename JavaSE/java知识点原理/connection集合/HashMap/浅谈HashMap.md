@@ -165,7 +165,7 @@ Resize 的第一步是扩容。当满足 HashMap.Size >= Capacity(**总容量**)
 
 **HashMap的数据结构 (古→今)**
 
-![1571147729617](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1571147729617.png)
+![1571147729617](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571147729617.png)
 
 Hash表是一个数组+链表的结构，这种结构能够保证在遍历与增删的过程中，如果不产生hash碰撞，仅需一次定位就可完成，时间复杂度能保证在O(1)。  在jdk1.7中，只是单纯的数组+链表的结构，但是如果散列表中的hash碰撞过多时，会造成效率的降低，所以在JKD1.8中对这种情况进行了控制，当一个hash值上的链表长度大于8时，该节点上的数据就不再以链表进行存储，而是转成了一个红黑树.
 

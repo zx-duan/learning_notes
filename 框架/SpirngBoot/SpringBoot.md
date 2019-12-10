@@ -6,7 +6,7 @@ SpringBoot是一个社区反馈推动而生的项目 , 可以说是整个Spring�
 
 包含了以下的特性
 
-![1567075257701](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567075257701.png)
+![1567075257701](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567075257701.png)
 
 *该框架非常火，目前新开项目几乎都是基于SpringBoot搭建，非常符合微服务架构要求，企业招聘大多都要求有* 
 
@@ -79,7 +79,7 @@ public static void main(String[] args) {
 
 **以上步骤过后一个简单的SpringBoot web项目就已经搭建完成了**
 
-![1567082406803](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567082406803.png)
+![1567082406803](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567082406803.png)
 
 ## 4.SpringBoot需要注意的点
 
@@ -185,7 +185,7 @@ public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factor
 
 ##### SpringBoot查看是否关联依赖
 
-![1567171139406](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171139406.png)
+![1567171139406](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171139406.png)
 
 
 
@@ -201,7 +201,7 @@ public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factor
 
 > 需要配置依赖
 >
-> ![1567171843661](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171843661.png)
+> ![1567171843661](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171843661.png)
 
 
 
@@ -213,9 +213,9 @@ public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factor
 
 > ==1.自动配置 , 在配置文件中配置数据库连接四要素就可以了==
 >
-> ​	![1567171488493](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171488493.png)
+> ​	![1567171488493](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171488493.png)
 >
-> ​	![1567171567079](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171567079.png)
+> ​	![1567171567079](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171567079.png)
 >
 > ​	在SpringBoot中 已经做了自动装配处理
 >
@@ -242,11 +242,11 @@ public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factor
 >
 > **在配置类中注入 DataSource的Bean**
 >
-> ![1567171916715](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171916715.png)
+> ![1567171916715](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171916715.png)
 >
 > **在测试的类中查看该对象是否已经成功创建并加载到Spirng容器中**
 >
-> ![1567171980276](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567171980276.png)
+> ![1567171980276](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567171980276.png)
 
 在日后的使用过程中我们通常使用第一种自动装配的方式配置数据库连接池
 
@@ -313,7 +313,7 @@ public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factor
 
 > 还是使用mapper.xml来写sql , 将mapper.xml的文件跟以前一样对应接口的地址就可以
 >
-> ![1567173114650](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567173114650.png)
+> ![1567173114650](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567173114650.png)
 >
 > 需要值得注意的是如果配置了xml方式作为sql的映射执行文件的话需要在SpringBoot的总配置文件中配置用来扫描Mapper映射接口的xml文件
 >
@@ -443,7 +443,7 @@ pagehelper.params=count=countSql
 
 **SpringBoot查找该类是否被Spring加载**
 
-![1567349011477](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567349011477.png)
+![1567349011477](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567349011477.png)
 
 
 

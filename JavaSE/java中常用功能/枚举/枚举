@@ -31,7 +31,7 @@
 
 1. 实现接口
 
-   ![1568109448701](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109448701.png)
+   ![1568109448701](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1568109448701.png)
 
    ```java
    //获取枚举类型中的成员变量
@@ -44,9 +44,9 @@
 
 1. **使用接口组织枚举**
 
-   ![1568109487568](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109487568.png)
+   ![1568109487568](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1568109487568.png)
 
-   ![1568109497008](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568109497008.png)
+   ![1568109497008](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1568109497008.png)
 
 
 
@@ -70,5 +70,5 @@
 
 
 
-![1568108656719](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568108656719.png)
+![1568108656719](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1568108656719.png)
 

@@ -40,7 +40,7 @@
 
 #### 1.1  消息队列的结构与流程
 
-![1572337660266](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572337660266.png)
+![1572337660266](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572337660266.png)
 
 Publisher : 生产者
 
@@ -198,7 +198,7 @@ public class SystemA {
 
 实现消息队列的软件是有很多个的 , 那么我们该如何根据自身需求的不同而采用不同的消息队列呢?
 
-![1572335736613](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572335736613.png)
+![1572335736613](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572335736613.png)
 
 
 
@@ -280,7 +280,7 @@ transaction机制就是说，发送消息前，开启事务(channel.txSelect())�
 
 ### 5.如何使用
 
-![1572339306722](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1572339306722.png)
+![1572339306722](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572339306722.png)
 
 ##### 导入依赖
 

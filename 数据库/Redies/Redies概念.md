@@ -76,7 +76,7 @@ redis持久化有两种方式：RDB和AOF
 
 redis在服务器启动的时候会检查是否开启了AOF，如果开启了就优先使用AOF文件来缓存数据库，只有AOF关闭的时候才会使用RDB文件来还原数据库状态，AOF文件的更新频率一般比RDB文件更新的频率更高。具体流程如下：
 
-![1567693299729](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567693299729.png)
+![1567693299729](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567693299729.png)
 
 redis中SAVE 和BGSAVE 命令可以用于生成RDB文件
 
@@ -122,9 +122,9 @@ AOF 重写实际上是读取数据库中的键值，生成一个新的AOF文件�
 
 ## Redis的缓存
 
-![1567693726905](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567693726905.png)
+![1567693726905](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567693726905.png)
 
-![1567693764534](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1567693764534.png)
+![1567693764534](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567693764534.png)
 
 
 
