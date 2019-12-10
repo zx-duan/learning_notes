@@ -78,7 +78,7 @@
 
 一般ioc注解和组件扫描注解配合一起使用
 
-<u>当遇到需要注入的Bean不是自己写的时候 , 还是可以使用<font style="color:red">方法</font>的形式来配置需要交给Spring的容器, 在配置文件中加入返回该Bean对象的方法即可</u> 
+<u>当遇到需要注入的Bean不是自己写的时候 , 还是可以使用<font style="color:red">方法</font>的形式来配置需要交给Spring的容器, 在配置文件中加入返回该Bean对象的方法即可</u>
 
 
 
