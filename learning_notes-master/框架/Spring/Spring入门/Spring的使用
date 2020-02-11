@@ -1,0 +1,38 @@
+<!-- markdownlint-disable -->
+# Spring的使用
+
+### `Spring的初始使用`
+
+##### 老版本执行流程图
+
+![img](https://upload-images.jianshu.io/upload_images/7896890-403a273b08fec826.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/985/format/webp)
+
+
+
+
+
+
+
+
+
+### DL依赖
+
+1. DI：Dependency Injection：依赖注入。
+
+从字面上分析：IoC：指将对象的创建权，反转给了 Spring 容器；DI ：指 Spring 创建对象的过程中，将对象依赖属性（常量，对象，集合）通过配置设值给该对象。
+
+1. IoC 从字面意思上很难体现出谁来维护对象之间的关系，Martin Fowler 提出一个新的概念 DI，更明确描述了“被注入对象（Service 对象）依赖 IoC 容器来配置依赖对象（DAO 对象）”。
+
+## 使用SpringMVC
+1. <h2>如何使用SpringMVc注解</h2>
+![反射创建对象](./img/反射创建Bean对象.png)
+  
+2. 如何使用反射创建的对象的属性
+
+    ![配置字段](img\属性.png) 前提是一定要有set属性 或者贴`@Autowired`
+3. <h2>1.如何使用Spring配置连接数据库的连接池**</h2>
+  ![img](img\连接数据库连接池.png)
+  
+<h3>注意：发现 Spring 注入属性时使用的是系统环境的 username 属性值。</h3>
+    如何解决这个问题
+    配置```xml <system-properties-mode='NEVER'>```（即不会从环境中去获取属性对应的值）或者对配置文件中 key 加些前缀，比如 jdbc.。（建议配置前缀）

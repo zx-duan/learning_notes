@@ -1,0 +1,28 @@
+# 数据库异常
+
+### 未能配置数据源:未指定“url”属性，也无法配置嵌入式数据源。
+
+> <font style="color:red">原因是: pagehaple-spring-boot-start里面内嵌了一个MtBatis</font>所以启动项目的时候就会报错
+
+![1568096988978](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568096988978.png)
+
+解决办法
+
+```java
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
+```
+
+> 配置注解从而达到启动时忽略数据库启动
+
+
+
+### 没有找到对应的配置文件
+
+> <font style="color:red">原因是没有写application.properties所以加载不了配置文件</font>
+
+![1568098587497](C:\Users\Zhangxinuser\AppData\Roaming\Typora\typora-user-images\1568098587497.png)
+
+解决办法
+
+> 写上application.properties配置文件
+

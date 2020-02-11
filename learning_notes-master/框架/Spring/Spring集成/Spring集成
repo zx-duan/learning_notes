@@ -1,0 +1,181 @@
+# Spring集成
+## 集成的准备
+2.1、搭建项目，添加依赖配置插件。
+
+1. 把 Spring 和 MyBatis 的等配置文件拷贝进项目 resources 目录下
+2. 配置数据库链接池
+3. 配置 SqlSessionFactory
+4. 配置 Mapper 组件
+5. 配置 Service 组件
+6. 配置事务相关   配合AOP
+7. 在 web.xml 配置端控制器和编码过滤器
+8. 在项目 resources 目录下添加 Spring MVC 的配置文件，并配置 MVC 注解解析器，扫描控制器，静态资源处理，视图解析器等等
+9. 在 Spring MVC 的配置文件中引入 Spring 配置文件
+
+
+
+
+
+
+
+
+
+# 拦截器
+>1. 过滤器 
+`TomCat`创建并放到容器环境中
+
+>2. `拦截器`是由Spring容器创建,放到Spring容器中
+
+区别是过滤器先拦截后走Servlet,拦截器先走Servlet后走拦截器   
+
+>为什么要使用拦截器? 
+>
+>>`过滤器拦截是将所有资源都进行拦截,当不需要拦截样式页面时就使用拦截器`
+- 丢给Spring来创建配置到Spring中
+   ![](img/拦截器.png)
+
+### 步骤
+1. 导入依赖包
+2. 写applicationContext配置文件中的内容
+   1. 数据库连接池
+      ```xml
+      <!--配置数据库连接池-->
+      <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+      </bean>
+      ```
+   2. `SqlSession连接对象`
+      ```xml
+        <bean id="sqlSessionFactory"           class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--配置数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置主配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--配置别名-->
+        <property name="typeAliasesPackage" value="cn.wolfcode.spring.domain"/>
+        <!--<property name="mapperLocations" value="" />-->
+      </bean>
+      ```
+   3. 配置mapper文件(生成动态代理类)
+      ```xml
+      <!--配置mapper的配置文件-->
+      <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.wolfcode.spring.mapper"/>
+      </bean>
+      ```
+   4. 配置创建Bean对象
+      ```xml
+      <!--配置ServiceBean-->
+      <context:component-scan base-package="cn.wolfcode.spring.service"/>
+      ```
+   5. 配置AOP事务增强
+      ```xml
+       <!--配置事务增强-->
+      <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+      </bean>
+      ```
+   6. 配置CRUD通用的事务配置
+      ```xml
+      <!-- CRUD通用事务的配置-->
+      <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="count*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+       </tx:advice>
+      <!-- <aop:config>
+        <aop:pointcut id="" expression="cn.wolfcode.spring.service.impl.*ServiceImpl.save(..)"/>
+      </aop:config>-->
+      <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* cn.wolfcode.spring.service.impl.*ServiceImpl..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+      </aop:config>
+      ```
+---
+3. 写java代码
+  
+   1. 创建数据库表
+   2. 使用插件映射Mapper接口和xml文件
+   
+      > 1. ![生成mapper](img/使用插件生成Mapper.png)
+      > 2. ![运行插件](/img/运行插件.png)
+   3. 使用Service实现Mapper接口中的方法
+   4. 使用控制器实现Service中的方法
+      1. 配置`MVC.xml`文件
+         1. 关联配置文件
+         ```xml
+             <!--关联配置文件-->
+            <import resource="classpath:applicationContext.xml"></import>
+         ```
+         2. 扫描控制器
+         ```xml
+            <!--扫描控制器-->
+            <context:component-scan base-package="cn.wolfcode.spring.web.controller"/>
+         ```
+         3. MVC注解解析器`开启MVC注解配置驱动`
+         ```xml
+            <!--MVC注解解析器-->
+            <mvc:annotation-driven></mvc:annotation-driven>
+         ```
+         4. 视图解析器
+
+            1. 视图解析
+            ```xml
+            <!--视图解析器-->
+             <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+               <property name="prefix" value="/WEB-INF/department/"></property>
+                <property name="suffix" value=".jsp"></property>
+             </bean>
+            ```
+            2. MVC拦截
+            ```xml
+            <mvc:interceptors>
+            <mvc:interceptor>
+            <!--拦截的地址-->
+            <mvc:mapping path="/**"/>
+            <!--不拦截的地址-->
+            <mvc:exclude-mapping path="/login.do" />
+            <!--配置拦截器-->
+            <bean class="cn.wolfcode.spring.web.interceptor.UserInterceptor"/>
+            </mvc:interceptor>
+            </mvc:interceptors>
+            ```
+         5. `实现控制器的配置 `
+   ```xml
+              <!--配置Servlet的过滤地址-->
+      <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:mvc.xml</param-value>
+        </init-param>
+            <load-on-startup>1</load-on-startup>
+            </servlet>
+         <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+      <!-- 配置过滤器的地址-->
+      <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+   ```
+   

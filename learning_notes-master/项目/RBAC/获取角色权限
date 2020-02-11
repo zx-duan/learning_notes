@@ -1,0 +1,288 @@
+# `员工模块`
+## 需要实现的功能
+
+1. 查询全部员工
+  
+- 查询员工回显到页面上.
+        
+1. 查询多个:
+    -       
+- 从数据库中查询全部的员工回显到页面上注意`页面`的内容页面内容存在部门表中的数据,需要`发送一条额外的Sql语句`查询出部门表的数据.
+- **利用其本身数据关联:多个员工对应一个部门,`将部门封装到实体类在查询的过程中关联部门表的数据 将查询的结果封装到实体类中`**
+  
+  代码示例:
+    ```xml
+    <resultMap id="BaseResultMap" type="cn.wolfcode.rabc.domain.Employee">
+        <result column="uid" property="uid"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="admin" property="admin" jdbcType="BIT"/>
+        <association property="dept" javaType="cn.wolfcode.rabc.domain.Department" columnPrefix="d_">
+            <result column="d_id" property="d_id"></result>
+            <result column="name" property="name"></result>
+            <result column="sn" property="sn"></result>
+        </association>
+        <collection property="roles" select="cn.wolfcode.rabc.mapper.RaleMapper.queryByEmployeeId"
+                    column="uid"></collection>
+    </resultMap>
+    ```
+  
+<h2>准备工作</h2>
+- 在实体类中定义一个属性````List<Rale> roles````用来保存查询出于`该员工所关联的角色表中的`数据
+      <h3>创建一个关联表</h3>
+      `表中的数据时员工表的ID与角色表的ID`
+, `在这个表中是多对多的关系`
+   1. 显示单个员工
+        -
+        - 在显示员工的同时需要将员工`所拥有的角色信息`显示到右边的展示列表中
+        - 将该属性中的内容回显到页面上
+    -   将数据查询出来并回显到页面
+    - `在查询的时候需要将查询到的角色信息查询出来并保存到实体类的一个属性上面`
+     -  代码示范
+          - ```xml
+            <collection property="roles"            select="cn.wolfcode.rabc.mapper.RaleMapper.queryByEmployeeId"
+                    column="uid"></collection>
+            <!--在角色.xml配置文件中添加一条SQL语句-->
+              <select id="queryByEmployeeId" resultType="cn.wolfcode.rabc.domain.Rale">
+            select r.id,r.name from employee_rale e LEFT JOIN rale  r ON e.raleid = r.id where e.employeeid=#{uid}
+            </select>
+            ```
+        基本的数据操作
+   2. 保存员工
+       -
+       -  在保存员工的时候由于业务关联性需要将`角色表中的信息显示到下面的下拉框中`
+       -  由于,`业务特性员工表与角色表有多对多的关系`需要在`添加or更改`员工时查询出所有的角色数据
+       -  此时需要在查询的同时`额外发送一条SQL语句查询出全部的角色数据`
+       -  在保存员工的同时需要将`员工`与`角色`的关系保存 `到 !员工角色关系表中`
+
+
+       -  根据页面传递过来的`角色ID集合`将集合中的内容循环添加到员工实体类的属性中
+              
+          - 
+   3. 更改员工   
+     
+       ​	![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\往员工和角色表添加保存的角色数据.png)
+
+       
+       
+        - 将部门查出的数据利用`<c:foreach>`循环回显到页面使用`js`将回显回的数据显示到下拉框中
+       
+        代码示例:
+        ```javascript
+        $("#dept option[value='${empl.dept.d_id}']").prop("selected", true);
+        ```
+        - 在更改的时候为了保证数据的一致性需要将与此员工关联的角色先`删除`在`保存一条与此表所关联的关联表数据的内容`
+        - ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\更改员工时逻辑操作.png)
+       
+        4. 删除员工
+       -
+       - `在删除员工的时候需要将该员工关联的角色关联表的数据也删除`
+       - 代码示范
+          ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/删除员工表内容并删除关联表中的信息.png)
+
+
+
+
+# `部门模块`
+   <h2>准备工作</h2>
+1. 查询部门
+  
+    单表查询
+2. 增加部门
+
+    单表增加
+3. 修改部门
+
+    单表修改
+4. 保存部门
+
+    单表保存
+# `角色模块`
+
+<h2>准备工作</h2>
+> `创建角色表 Role`
+>
+> >因为每种`角色有不同的权限`所以在创建角色表的同时需要`创建一个角色与权限关联的表`
+>
+> 在保存角色的时候需要把`角色与权限关联起来`所以需要在角色的实体类中创建一个`包含权限实体对象的`一个属性用来存储`角色中的权限`
+>
+> 在编辑或保存的时候应该先`发送一条额外的SQL语句用来查询全部的权限并回显到页面上`
+>
+> <a href='#tips' style="color:red">问题?  如何定义权限,用什么来定义权限</a>
+
+
+1. 查询
+    -
+    从数据库中查询角色表中的数据并回显到页面上
+2. 添加角色
+    -
+    - 在添加一名角色并在`添加的同时添加`需要同时往`角色权限关联表中添加一条角色与权限关联的信息`
+      - 代码示例
+      - ![角色添加关联数据](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/角色添加并添加关联数据.png)
+      - ![角色添加关联数据的方法](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/角色添加关联数据的方法.png)
+      - ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/循环的往关联数据表存数据.png)
+3. 修改角色
+    -
+    
+    - 在修改一名角色的同时,需要将`该角色本身就已经拥有的权限`回显到当前页面的右边,在查询的时候需要发送一条额外的SQL语句来实现这个效果
+      - <span style="color:yellow;">代码示例</span>
+      - ```xml
+        <!--在角色的配置表中发送额外的SQL语句-->
+        <collection property="permdata" select="cn.wolfcode.rabc.mapper.PermissionMapper.queryrolePermission"
+                    column="id"></collection>
+        <!--在权限的Mapper配置表中-->
+        <select id="queryrolePermission" resultType="cn.wolfcode.rabc.domain.Permission">
+            select  p.id,p.name,p.expression
+            from role_permission r LEFT JOIN permission p ON r.permissonid = p.id `WHERE r.raleid=#{raleid}`
+        </select>
+        ```
+    - 在修改一名角色的同时需要将该`角色事先所拥有的权限全部清空并保存当前选中的权限`就需要在修改前发送使用`SQL语句根据当前选中的角色ID删除角色与权限的关联表从而达到不删除本身权限的同时删除该角色与之关联的数据`
+      - 代码示例
+      - ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/更新角色service.png)
+        ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/更新角色Mapper.png)
+4. 删除角色
+    -
+    
+    - `删除角色的时候需要将角色与之关联的关联数据一并删除`从而达到数据不会滞留的情况,就需要在删除该角色之前根据该角色ID删除与这个角色相关的数据
+    - 代码省略......
+# `权限模块`
+
+- 显示用户的权限
+    -
+> <a>上文说到如何定义权限,用什么来定义权限</a>
+>
+> 用什么来定义权限:
+> > 思路:当用户进行不同的访问时需要跳转到不同的控制器中的方法`我们可以把控制器中不同访问方法当做权限管理起来`
+>
+> 如何定义权限
+> > <span style="color:green">思路</span>:我们知道,权限是一种特定且唯一的标识并且需要用在很多地方,所以`我们可以利用贴注解的方式来指定某些控制器被赋予了指定的权限`
+>
+> 如何指定哪些注解有权限
+> > 使用自定义注解的方式给控制器贴上权限,并声明该权限属于什么权
+> >
+> > 限
+> >
+> > > 代码示范:
+> > > ![](C:\Users\Zhangxinuser\Desktop\新的学习总结\RBAC\IMG\/权限定义.png)
+> >
+> > >2、`控制器中处理方法怎么转化成权限表中的数据`
+> > >权限表中除了主键，还有 name 和 expression 字段，这些字段值怎么来呢？
+> > >`name 字段给角色分配至权限的时候看的`，必须是人看得懂，尤其做的给中国人用，须是中文名称，见名知意。
+> > >`那么在处理方法贴注解，`注解的值使用中文名称即可，表明是什么样的权限。
+> > >- 贴注解了除了上面的好处，还有区分一个处理方法是否要做权限限制，贴了代表要，反之不要；
+> > >- 还有一个好处就是省得自己手动拼接权限表达式，存入的时候拼接一次，判断时候再拼接一次。
+
+> ><font style="color:red">!如何查找这些权限</font>
+> >
+> >>在获取所有权限的时候事先发送一个AJAX请求获取`控制器上面贴的注解内容`并将它们拼接起来
+> >>>- 获取权限数据库中所有的注解`(为了不重复添加权限)`
+> >>>- `我们知道控制器`<span style="color:red">Controller</span>`也是一个容器,所以可以获取控制器的容器对象`
+> >>>- 在从容器中获取所有贴有<span style="color:red">@Controller</span>注解的bean
+> >>>- 获取所有的控制器对象
+> >>>- 获取控制对对象中的方法
+> >>>- 找这些方法是否贴了自定义的注解
+> >>>- 如果这些方法贴了自定义注解,则获取该方法上面注解的权限表达式
+> >>>7. 利用刚刚保存起来的`权限表达式内容`判断是否包含了新加入的注解如果不包含就往权限类中新增这些注解
+> >>>8. 利用Mapper容器`调用数据库里面增加这些已经加入新权限实体类的方法`达到添加权限的功能
+> ><span style="color:green">代码示范:</span>
+> >>>>
+```java
+        //设置容器
+        @Autowired
+        private ApplicationContext context;
+        @Override
+        public void reload() {
+            /*获取容器的对象*/
+
+            //查询所有用户权限的数据 (用于避免重复录入权限)
+            List<Permission> permissions = permissionMapper.listAll();
+            Set<String> permissionsExperssions = new HashSet<>();
+            for (Permission permission : permissions) {
+                //获取所有的注解中的权限表达式并添加到一个Set集合中
+                permissionsExperssions.add(permission.getExpression());
+            }
+            //从容器中获取所有贴标签的ControllerBean
+            Map<String, Object> annotations = context.getBeansWithAnnotation(Controller.class);
+            //获取所有的控制器对象
+            Collection<Object> collections = annotations.values();
+            //从容器中获取自己自定义的注解的方法
+            for (Object collection : collections) {
+                //获取字节码对象下面的方法
+                Method[] methods = collection.getClass().getDeclaredMethods();
+                for (Method method : methods) {
+                    //获取该方法是否存在这个注解
+                    boolean isExits = method.isAnnotationPresent(RequriedPermission.class);
+                    //如果存在这个注解
+                    if (isExits) {
+                        //获取拼接注解
+                        String expression = StringUtil.getExpression(method); //自定义的工具类,用于拼接权限表达式
+                        //判断上面存起来的注解中是否包含这个注解
+                        /**
+                        * 如果不包含这个注解就把查出来的注解新增进去反之不进行操作
+                        */,
+                        if (!permissionsExperssions.contains(expression)) {
+                            Permission permission = new Permission();
+                            //获取这个方法下面这个注解的值
+                            String value = method.getAnnotation(RequriedPermission.class).value();
+                            permission.setName(value);
+                            permission.setExpression(expression);
+                            permissionMapper.insert(permission);
+                        }
+                    }
+                }
+            }
+        }
+```
+
+- 使用AJax请求后需要回显数据到用户上面
+
+
+
+
+
+###### 如何实现权限认证
+
+1. 判断登录的用户是否具有权限 
+
+   将权限认证写在拦截器中访问请求的时候做拦截,获取到当前登录的用户
+  
+   ```java
+         Employee employee = UserContent.getEmployee();
+           //如果是管理员就直接放行
+           if (employee.isAdmin()) {
+               return true;
+           }
+   ```
+
+  
+
+​		从当前请求的实体中寻找自定义的注解 , 如果这个这个注解是空的 , 代表这个方法不需要访问权限
+
+```java
+
+        //获取当前请求的方法
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        //获取方法中包含的注解
+        RequriedPermission methodAnnotations = handlerMethod.getMethodAnnotation(RequriedPermission.class);
+        //登录的方法不存在注解 也放行 , 代表了这些方法中没有设定权限
+        if (methodAnnotations == null) {
+            return true;
+        }
+```
+
+
+
+从工具类中获取当前用户的所有权限 , 获取所有的方法判断权限表达式中是否包含这些方法
+
+```java
+ //获取当前登录用户的所有权限
+        List<String> experssions = UserContent.getExperssions();
+        String expression = StringUtil.getExpression(handlerMethod.getMethod());
+        //如果这个用户拥有这个权限 就放行
+        if (experssions.contains(expression)) {
+            return true;
+        }
+```
+
