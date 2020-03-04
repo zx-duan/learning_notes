@@ -8,7 +8,7 @@
 ![avatar](img/MVC控制器流程.png ) 
 
 2. 常见的MVC框架
-  
+
 
 Struts1 ---> WebWork ---> Struts2
 SpringMVC
@@ -133,21 +133,23 @@ JSF
         ```
     3. `在控制器中注册自定义属性编辑器`
     ![img](img\date.png)
-   
+      
     4. 国际化
         ```xml
 	    <dependency>
             <groupId>org.apache.taglibs</groupId>
-   	 	    <artifactId>taglibs-standard-spec</artifactId>
-   	 	    <version>1.2.5</version>
+         	 	    <artifactId>taglibs-standard-spec</artifactId>
+         	 	    <version>1.2.5</version>
         </dependency>
 	    <dependency>
 	        <groupId>org.apache.taglibs</groupId>
 	        <artifactId>taglibs-standard-impl</artifactId>
             <version>1.2.5</version>
         </dependency>
+           ```
        ```
         ![img](img\fmt标签.png)
+       ```
 
 
 

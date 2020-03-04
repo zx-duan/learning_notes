@@ -40,7 +40,7 @@
 
 #### 1.1  消息队列的结构与流程
 
-![1572337660266](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572337660266.png)
+![1572337660266](C:\Users\Administrator\Desktop\记录\learning_notes-master\imgs\1572337660266.png)
 
 Publisher : 生产者
 
@@ -51,6 +51,10 @@ Message : 消息
 Exchange : 交换机
 
 Queue  : 队列
+
+
+
+##### [消息队列精进](https://www.cnblogs.com/linkenpark/p/5393666.html)
 
 
 
@@ -198,7 +202,7 @@ public class SystemA {
 
 实现消息队列的软件是有很多个的 , 那么我们该如何根据自身需求的不同而采用不同的消息队列呢?
 
-![1572335736613](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572335736613.png)
+![1572335736613](C:\Users\Administrator\Desktop\记录\learning_notes-master\imgs\1572335736613.png)
 
 
 
@@ -280,7 +284,7 @@ transaction机制就是说，发送消息前，开启事务(channel.txSelect())�
 
 ### 5.如何使用
 
-![1572339306722](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1572339306722.png)
+![1572339306722](C:\Users\Administrator\Desktop\记录\learning_notes-master\imgs\1572339306722.png)
 
 ##### 导入依赖
 
@@ -509,10 +513,6 @@ public class TopicReceiver01 {
 
 
 
-
-
-
-
 > `@RabbitListener` : 用于监听RabbitMQ消息 从消息队列中
 >
 > > 参数
@@ -546,11 +546,20 @@ public class TopicReceiver01 {
 
 
 
+[消息队列RabbitMq的五种形式队列](https://blog.csdn.net/qq_36838191/article/details/79914274)
 
 
 
 
-消息队列精进
 
+### 消息队列精进
 
+#### Virtualhost
 
+Virtualhost是什么?
+
+Virtualhost的作用?
+
+创建RabbitMQ的 "数据库" `virtualhost`
+
+[创建virtualhost](https://www.rabbitmq.com/vhosts.html)
