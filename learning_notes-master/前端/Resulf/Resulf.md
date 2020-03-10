@@ -200,7 +200,7 @@ Spring MVC通过该注解 自动的去匹配该类型的参数并将数据封装
 从服务器响应回客户端的时间格式要做日期转换并计算地区时差 使用 
 
 ```java
- @JsonFormat(pattern = ("yyyy-MM"), timezone = "GTM+8")
+@JsonFormat(pattern = ("yyyy-MM"), timezone = "GTM+8")
 ```
 
 
