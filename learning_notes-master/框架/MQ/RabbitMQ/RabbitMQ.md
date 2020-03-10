@@ -550,7 +550,7 @@ public class TopicReceiver01 {
 
 
 
-
+[消息队列详解](https://blog.csdn.net/hellozpc/article/details/81436980)
 
 ### 消息队列精进
 
