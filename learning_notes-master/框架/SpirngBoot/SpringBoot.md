@@ -8,9 +8,7 @@ SpringBoot是一个社区反馈推动而生的项目 , 可以说是整个Spring�
 
 ![1567075257701](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1567075257701.png)
 
-*该框架非常火，目前新开项目几乎都是基于SpringBoot搭建，非常符合微服务架构要求，企业招聘大多都要求有* 
-
-*SpringBoot开发经验，属于面试必问的点*
+*该框架非常火，目前新开项目几乎都是基于SpringBoot搭建，非常符合微服务架构要求*
 
 ## 2.使用SpirngBoot能为我们做什么
 

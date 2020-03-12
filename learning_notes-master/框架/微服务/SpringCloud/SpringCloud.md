@@ -51,7 +51,7 @@ Spring Cloud是一系列框架的有序集合。它利用[Spring Boot](https://b
 
 [最后结构图]()
 
-![1571382780688](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571382780688.png)
+![1571382780688](SpringCloud.assets/1571382780688_.png)
 
 
 
@@ -59,9 +59,9 @@ Spring Cloud是一系列框架的有序集合。它利用[Spring Boot](https://b
 
 方式一 :
 
-- 通过idea中内置的springBoot项目构建工具![1571382695353](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571382695353.png) 在搭建SpringBoot项目的同时勾选springCloud相关联的依赖 , 创建出SpringCloud的**eureka**注册中心  **如下所示**
+- 通过idea中内置的springBoot项目构建工具![1571382695353](SpringCloud.assets/1571382695353.png) 在搭建SpringBoot项目的同时勾选springCloud相关联的依赖 , 创建出SpringCloud的**eureka**注册中心  **如下所示**
 
-![注册中心](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571382848669.png)
+![注册中心](SpringCloud.assets/1571382848669.png)
 
 ```java
 	//相关依赖
@@ -111,7 +111,7 @@ eureka:
 
 - 在创建了注册中心的服务后 , 我们可以创建我们业务所对应的服务 , **商品服务** , 也是通过一样的办法SpringBoot的集成方式创建出来 , 然后勾选eureka注册中心 **服务的客户端**  **如下所示**
 
-  ![1571383218862](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571383218862.png)
+  ![1571383218862](SpringCloud.assets/1571383218862.png)
 
   ```java
   //相关依赖
@@ -129,7 +129,7 @@ eureka:
 
 - 创建好服务的生产者后 , 继续创建服务的消费者 方法如上
 
-  ![1571383765636](C:\Users\Zhangxinuser\Desktop\新的学习总结\imgs\1571383765636.png)
+  ![1571383765636](SpringCloud.assets/1571383765636.png)
 
   ```java
          //服务的监听者

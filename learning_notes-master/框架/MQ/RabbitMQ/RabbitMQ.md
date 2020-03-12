@@ -544,7 +544,7 @@ public class TopicReceiver01 {
 
 5.1.1  死信队列 
 
-
+[死信队列](https://www.cnblogs.com/mfrank/p/11184929.html)
 
 [消息队列RabbitMq的五种形式队列](https://blog.csdn.net/qq_36838191/article/details/79914274)
 
