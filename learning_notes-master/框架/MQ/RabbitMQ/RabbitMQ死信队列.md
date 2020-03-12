@@ -51,7 +51,9 @@ public class RabbitMQConfig {
     public static final String BUSINESS_EXCHANGE_NAME = "dead.letter.demo.simple.business.exchange";
     public static final String BUSINESS_QUEUEA_NAME = "dead.letter.demo.simple.business.queuea";
     public static final String BUSINESS_QUEUEB_NAME = "dead.letter.demo.simple.business.queueb";
+    //死信队列交换机
     public static final String DEAD_LETTER_EXCHANGE = "dead.letter.demo.simple.deadletter.exchange";
+    //死信队列路由key
     public static final String DEAD_LETTER_QUEUEA_ROUTING_KEY = "dead.letter.demo.simple.deadletter.queuea.routingkey";
     public static final String DEAD_LETTER_QUEUEB_ROUTING_KEY = "dead.letter.demo.simple.deadletter.queueb.routingkey";
     public static final String DEAD_LETTER_QUEUEA_NAME = "dead.letter.demo.simple.deadletter.queuea";
@@ -61,12 +63,6 @@ public class RabbitMQConfig {
     @Bean("businessExchange")
     public FanoutExchange businessExchange(){
         return new FanoutExchange(BUSINESS_EXCHANGE_NAME);
-    }
-
-    // 声明死信Exchange
-    @Bean("deadLetterExchange")
-    public DirectExchange deadLetterExchange(){
-        return new DirectExchange(DEAD_LETTER_EXCHANGE);
     }
 
     // 声明业务队列A
@@ -91,6 +87,12 @@ public class RabbitMQConfig {
         return QueueBuilder.durable(BUSINESS_QUEUEB_NAME).withArguments(args).build();
     }
 
+    // 声明死信Exchange
+    @Bean("deadLetterExchange")
+    public DirectExchange deadLetterExchange(){
+        return new DirectExchange(DEAD_LETTER_EXCHANGE);
+    }
+    
     // 声明死信队列A
     @Bean("deadLetterQueueA")
     public Queue deadLetterQueueA(){
