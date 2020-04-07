@@ -16,79 +16,24 @@
 
 > 我们在使用Spring AMQP的时候往往就是声明连接工厂，Queue， Exchange，Binding。
 
-```
+```java
 @Bean
-
-
-
 public Queue mailQueue() {
-
-
-
     Map<String, Object> map = new HashMap<String, Object>();
-
-
-
     map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机
-
-
-
     map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey
-
-
-
     Queue queue = new Queue("mailQueue",true, false, false, map);
-
-
-
     return queue;
-
-
-
 }
 
-
-
- 
-
-
-
 @Bean
-
-
-
 public DirectExchange mailExchange() {
-
-
-
     return new DirectExchange("mailExchange", true, false);
-
-
-
 }
 
-
-
- 
-
-
-
 @Bean
-
-
-
 public Binding mailBinding() {
-
-
-
-    return BindingBuilder.bind(mailQueue()).to(mailExchange())
-
-
-
-            .with(mailRoutingKey);
-
-
-
+    return BindingBuilder.bind(mailQueue()).to(mailExchange()).with(mailRoutingKey);
 }
 ```
 
@@ -100,7 +45,7 @@ public Binding mailBinding() {
 
 > 我们看了RabbitAdmin的`initialize()`方法的源码就知道队列是怎么自动创建的了。
 
-```
+```java
 	if (this.applicationContext == null) {
 
 
@@ -162,7 +107,7 @@ public Binding mailBinding() {
 
 > 通过代码片段，我们可以看到，RabbitAdmin初始化的时候会从spring容器里取出所有的交换器bean, 队列bean, Binding Bean; 取出之后干什么呢，当然是创建了，下面来看下创建代码
 
-```
+```java
 	this.rabbitTemplate.execute(new ChannelCallback<Object>() {
 
 
@@ -210,7 +155,7 @@ public Binding mailBinding() {
 
 \####配置RabbitAdmin
 
-```
+```java
 @Bean
 
 
@@ -230,7 +175,7 @@ public RabbitAdmin rabbitAdmin(ConnectionFactory defaultConnectionFactory){
 
 \####消费端核心配置SimpleMessageListenerContainer类
 
-```
+```java
 @Bean
 
 
@@ -262,7 +207,7 @@ public SimpleMessageListenerContainer messageListenerContainer() {
 
 > 我们来看下`SimpleMessageListenerContainer`类的初始化配置，也就是`doStart()`方法，因为代码太长，这里就不粘贴全部了,看下面的源码
 
-```
+```java
 ...
 
 

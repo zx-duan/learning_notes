@@ -112,7 +112,7 @@ public class FanoutConfig {
 
  生产者 timestamp 设置为0 
 
-
+`设置消息头`
 
 ```java
 package com.itmayiedu.rabbitmq;
@@ -139,7 +139,7 @@ public class FanoutProducer {
         jsonObject.put("timestamp", 0);
         String jsonString = jsonObject.toJSONString();
         System.out.println("jsonString:" + jsonString);
-        // 设置消息唯一id 保证每次重试消息id唯一  
+        // 设置消息唯一id 保证每次重试消息id唯一 
         Message message = MessageBuilder.withBody(jsonString.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding("utf-8")
                 .setMessageId(UUID.randomUUID() + "").build(); //消息id设置在请求头里面 用UUID做全局ID 

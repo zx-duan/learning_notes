@@ -515,7 +515,7 @@ public class TopicReceiver01 {
 
 
 
-
+#### 参数及其配置
 
 > `@RabbitListener` : 用于监听RabbitMQ消息 从消息队列中
 >
@@ -530,6 +530,9 @@ public class TopicReceiver01 {
 > channel.basicAck(deliveryTag, false);
 >  ```
 >
+> ><font style="color:red">deliveryTag（唯一标识 ID）</font>：当一个消费者向 RabbitMQ 注册后，会建立起一个 Channel ，RabbitMQ 会用 basic.deliver 方法向消费者推送消息，这个方法携带了一个 delivery tag， 它代表了 RabbitMQ 向该 Channel 投递的这条消息的唯一标识 ID，是一个单调递增的正整数，delivery tag 的范围仅限于 Channel
+> ><font style="color:red">multiple：</font>为了减少网络流量，手动确认可以被批处理，当该参数为 true 时，则可以一次性确认 delivery_tag 小于等于传入值的所有消息
+>
 > > 参数
 > >
 > > bindings = @QueueBinding(value = @Queue,exchange = @Exchange(name = "boot_pubsub",type = "fanout"))
@@ -543,6 +546,11 @@ public class TopicReceiver01 {
 > > @QueueBinding(**key = {"error","info"}**)
 > >
 > > 路由模式 : 当路由的key满足以上字段就会给消费者通知
+>
+> ```java
+> //用于拒绝接收消息
+> channel.basicNack(devtag, false, false);
+> ```
 
 
 
