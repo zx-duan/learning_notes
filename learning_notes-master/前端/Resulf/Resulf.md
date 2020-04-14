@@ -194,13 +194,13 @@ Spring MVC通过该注解 自动的去匹配该类型的参数并将数据封装
 在从客户端像服务器中发送日期格式的数据时要将时间转换 使用 
 
 ```java
-@DateTimeFormat(pattern=("yyyy-MM"))
+@DateTimeFormat(pattern=("yyyy-MM-dd HH:mm:ss"))
 ```
 
 从服务器响应回客户端的时间格式要做日期转换并计算地区时差 使用 
 
 ```java
-@JsonFormat(pattern = ("yyyy-MM"), timezone = "GMT+8")
+@JsonFormat(pattern = ("yyyy-MM-dd HH:mm:ss"), timezone = "GMT+8")
 ```
 
 

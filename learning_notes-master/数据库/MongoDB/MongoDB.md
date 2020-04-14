@@ -559,6 +559,162 @@ Query querys = new Query();
 
 ###### 查询
 
+```java
+@Slf4j
+@Service
+public class MongoService {
+
+    @Resource
+    private MongoTemplate mongoTemplate;
+
+    /**
+     * 查询全部
+     *
+     * @return ApiResponse
+     */
+    public ApiResponse findStudents() {
+        mongoTemplate.dropCollection(Customer.class);
+        List<Student> students = mongoTemplate.findAll(Student.class);
+        System.out.println(students);
+        long count = mongoTemplate.count(new Query().with(new Sort(Sort.Direction.ASC, "username")), Student.class);
+        return Api.ok(students, String.format("%s%d%s", "查询到", count, "条"));
+    }
+
+    /**
+     * 根据id查询
+     *
+     * @param id _id
+     * @return ApiResponse
+     */
+    public ApiResponse findStudentByID(String id) {
+        Student student = mongoTemplate.findById(id, Student.class);
+        return Api.ok(student);
+    }
+
+    /**
+     * 准确查询
+     *
+     * @param student Student对象
+     * @return ApiResponse
+     */
+    public ApiResponse findStudentListByMany(Student student) {
+        Query query = new Query(Criteria
+                .where("username").is(student.getUsername())
+                .and("gender").is(student.getGender())
+                .and("age").gt(student.getAge()));
+        List<Student> students = mongoTemplate.find(query, Student.class);
+        return Api.ok(students);
+    }
+
+    /**
+     * 模糊查询
+     * 模糊查询以 【^】开始 以【$】结束 【.*】相当于Mysql中的%
+     *
+     * @param username 用户名
+     * @return ApiResponse
+     */
+    public ApiResponse findStudentsLikeName(String username) {
+        String regex = String.format("%s%s%s", "^.*", username, ".*$");
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Query query = new Query(Criteria.where("username").regex(pattern));
+        List<Student> students = mongoTemplate.find(query, Student.class);
+        return Api.ok(students);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param request
+     * @return
+     */
+    public PageApiResponse findStudentsPage(StudentRequest request) {
+        try {
+            Query query = new Query();
+            if (StringUtils.isNotEmpty(request.getUsername())) {
+                String regex = String.format("%s%s%s", "^.*", request.getUsername(), ".*$");
+                Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+                query.addCriteria(Criteria.where("username").regex(pattern));
+            }
+            int totalCount = (int) mongoTemplate.count(query, Student.class);
+            List<Student> studentList = mongoTemplate.find(query.skip(request.getOffset()).limit(request.getPageSize()), Student.class);
+            PageApiResponse response = PageApi.ok(studentList, totalCount, "获取列表成功");
+            response.setTotalPage(PageCounter.toTalPage(totalCount, request.getPageSize()));
+            response.handleRequest(request);
+            return response;
+        } catch (Exception e) {
+            throw new SystemException(-1, "获取分页数据出错");
+        }
+    }
+
+    /**
+     * 修改
+     *
+     * @param student Student
+     * @return ApiResponse
+     */
+    public ApiResponse updateStudent(Student student) {
+        try {
+            Query query = new Query(Criteria.where("_id").is(student.getId()));
+            Update update = new Update();
+            update.set("username", student.getUsername());
+            update.set("password", student.getPassword());
+            update.set("age", student.getAge());
+            update.set("gender", student.getGender());
+            UpdateResult result = mongoTemplate.upsert(query, update, Student.class);
+            long count = result.getModifiedCount();
+            if (count > 0) {
+                return Api.ok(null, "更新成功");
+            }
+            throw new ServiceException(-1, "更新失败");
+        } catch (ServiceException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SystemException(-1, "更新出错");
+        }
+    }
+
+    /**
+     * 删除
+     *
+     * @param id id
+     * @return ApiResponse
+     */
+    public ApiResponse delete(String id) {
+        try {
+            Query query = new Query(Criteria.where("_id").is(id));
+            DeleteResult result = mongoTemplate.remove(query, Student.class);
+            long count = result.getDeletedCount();
+            if (count > 0) {
+                return Api.ok(count, "删除成功");
+            }
+            throw new ServiceException(-1, String.format("【%s】%s", id, "不存在"));
+        } catch (ServiceException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new SystemException(-1, "删除出错");
+        }
+    }
+
+    /**
+     * 新增
+     *
+     * @param student
+     * @return
+     */
+    public ApiResponse createStudent(Student student) {
+        try {
+            Student insert = mongoTemplate.insert(student);
+            return Api.ok(insert);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SystemException(-1, "创建出错");
+        }
+    }
+}
+
+```
+
 
 
 
